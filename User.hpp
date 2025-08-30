@@ -15,6 +15,10 @@ class User{
         void Register();
         void Login();
         void ShowInfo();
+        string GetLocation() const { return Location; }
+       string GetName() const { return this->UserName; }
+        int GetBalance() const { return AccountBalance; }
         // bool IsExisted();
         // bool IsValid();
+
 };
