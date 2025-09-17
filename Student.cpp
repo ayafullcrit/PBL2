@@ -6,15 +6,15 @@
 using namespace std;
 
 User::User(string accName, string pass, string uname, string id, string loc, int balance) {
-    AccountName = accName;
-    Password = pass;
-    UserName = uname;
-    AccountId = id;
-    Location = loc;
-    AccountBalance = balance;
+    this->AccountName = accName;
+    this->Password = pass;
+    this->UserName = uname;
+    this->AccountId = id;
+    this->Location = loc;
+    this->AccountBalance = balance;
 }
 
-void Student::AddTeacher(Teacher t){
+void Student::AddTeacher(const Teacher& t){
     TeacherList.push_back(t);
     cout<<"Them giao vien:"<<t.GetName()<<endl;
 }
@@ -48,8 +48,7 @@ void Student::Find_ByLocation( string& location) {
 
 void Student::Pay_TeachingFee(Teacher t, int amount) {
     if ( t.GetBalance()>= amount) {
-        t.GetBalance() -= amount;
-        t.UpdateBalance(amount);
+        t.UpdateBalance(-amount);
         cout << "Paid " << amount << " VND to teacher " << t.GetName() << endl;
     } else {
         cout << "Not enough balance!" << endl;
