@@ -1,22 +1,18 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include"Username.hpp"
 #include"Student.h"
+#include"User.hpp"
+#include"Teacher.h"
+#include"Subject.h"
 using namespace std;
 
-User::User(string accName, string pass, string uname, string id, string loc, int balance) {
-    this->AccountName = accName;
-    this->Password = pass;
-    this->UserName = uname;
-    this->AccountId = id;
-    this->Location = loc;
-    this->AccountBalance = balance;
-}
+Student::Student(string accName, string pass, string uname, string id, string loc, int balance)
+    : User("Student", accName, uname, pass, loc, balance) {}
 
-void Student::AddTeacher(const Teacher& t){
+void Student::AddTeacher(const Teacher& t) {
     TeacherList.push_back(t);
-    cout<<"Them giao vien:"<<t.GetName()<<endl;
+    cout << "Added teacher: " << t.GetName() << endl;
 }
 
 void Student::Show_TeacherList(){
@@ -29,8 +25,8 @@ void Student::Show_TeacherList(){
 void Student::Find_BySubject( string& subjectName){
     cout << "Searching teachers for subject: " << subjectName << endl;
     for (auto t : TeacherList) {
-        for (auto s : t.Getsubject()) {
-            if (s.Getname() == subjectName) {
+        for (auto s : t.GetSubjectList()) {
+            if (s.GetSubject() == subjectName) {
                 t.ShowInfo();
             }
         }
