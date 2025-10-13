@@ -7,6 +7,8 @@
 #include "Subject.h"
 using namespace std;
 
+Teacher::Teacher(string accName, string pass, string uname, string id, string loc, int balance)
+    : User("Teacher", accName, uname, pass, loc, balance) {}
 
 void Teacher::AddStudent(const Student& t) {
     StudentList.push_back(t);
@@ -47,7 +49,7 @@ void Teacher::Find_ByLocation(){
     cout << "Hoc sinh o vi tri " << location << ":\n";
     for (const auto& s : StudentList) {
         if (s.GetLocation() == location) {
-            cout << s.GetLocation() << endl;
+            cout << s.GetName() << " " << s.GetLocation() << endl;
         }
     }
 }
@@ -84,3 +86,7 @@ void Teacher::Update_SubjectInfo() {
     }
     cout << "Khong tim thay mon hoc: " << subjectName << endl;
 }
+
+vector<Subject> Teacher::GetSubjectList() const {
+    return SubjectList;
+}   
