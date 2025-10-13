@@ -1,12 +1,14 @@
 
-#define STUDENT_H
+#pragma once
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include"User.hpp"
-using namespace std;
 
+#include"Subject.h"
+using namespace std;
+class Teacher; //khai bao truoc
 class Student : public User {
 private:
     vector<Teacher> TeacherList;
