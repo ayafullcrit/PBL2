@@ -1,22 +1,21 @@
 #pragma once
 #include "User.h"
 #include "MyVector.h"
-class Subject;
+class SubjectRecord;
 class Student;
+class Subject;
 class Tutor : public User
 {
 private:
     double Rating;
     int NumOfRatings;
-    MyVector<Subject *> SubjectList;
-    MyVector<Student *> StudentList;
-    
+    MyVector<SubjectRecord *> SubjectList;
+
 public:
     // con/destructor
     Tutor(const string & = "000000", const string & = "DefaultName",
           const string & = "Viet Nam", const string & = "12345",
-          const int & = 0, const int & = 10, const double & = 0,
-          const int & = 10);
+          const int & = 0, const int & = 0, const double & = 0);
     Tutor(const Tutor &);
     ~Tutor();
     // override funcion
@@ -33,11 +32,15 @@ public:
     {
         NumOfRatings = numofratings;
     };
+    MyVector<SubjectRecord *> &getSubjectList() { return SubjectList; }
+    SubjectRecord* operator[](int);
+    Tutor& operator=(const Tutor&);
     //  class's method
     void AddSubject(Subject &);
-    void AddStudent(Student &);
+    void AddSubject(const string &);
+    void addStudentToSubject(Student &, Subject &s);
     void Show_SubjectList();
     void Show_StudentList();
-    void DeleteStudent(const string &){};
+    void DeleteStudent(Student&);
     //
 };

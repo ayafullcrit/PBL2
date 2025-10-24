@@ -4,15 +4,17 @@
 using namespace std;
 
 template <typename T>
-class MyVector {
+class MyVector
+{
 private:
-    T* data;          // mảng các phần tử kiểu T
-    int size;         // số phần tử hiện có
-    int capacity;     // dung lượng đã cấp phát
+    T *data;      // mảng các phần tử kiểu T
+    int size;     // số phần tử hiện có
+    int capacity; // dung lượng đã cấp phát
 
-    void reallocate(int newCapacity) {
+    void reallocate(int newCapacity)
+    {
         // Cấp phát vùng nhớ mới
-        T* newData = new T[newCapacity];
+        T *newData = new T[newCapacity];
 
         // Sao chép dữ liệu cũ
         for (int i = 0; i < size; ++i)
@@ -26,14 +28,14 @@ private:
 
 public:
     // Constructor mặc định
-    MyVector(int initialCapacity = 2)
+    MyVector(int initialCapacity = 20)
         : size(0), capacity(initialCapacity)
     {
         data = new T[capacity];
     }
 
     // Constructor sao chép (copy constructor)
-    MyVector(const MyVector<T>& other)
+    MyVector(const MyVector<T> &other)
         : size(other.size), capacity(other.capacity)
     {
         data = new T[capacity];
@@ -42,25 +44,44 @@ public:
     }
 
     // Destructor
-    ~MyVector() {
+    ~MyVector()
+    {
         delete[] data;
     }
 
     // Thêm phần tử mới
-    void push_back(const T& value) {
+    void push_back(const T &value)
+    {
         if (size >= capacity)
-            reallocate(capacity * 2);  // tự mở rộng khi đầy
+            reallocate(capacity * 2); // tự mở rộng khi đầy
         data[size++] = value;
     }
+    
+    void removeAt(int index)
+    {
+        if (index < 0 || index >= size)
+            throw out_of_range("Index out of range");
 
+        // Giải phóng đối tượng tại vị trí index
+        delete data[index];
+
+        // Dịch các phần tử phía sau sang trái
+        for (int i = index; i < size - 1; ++i)
+            data[i] = data[i + 1];
+
+        // Giảm size và dọn con trỏ cuối
+        --size;
+    }
     // Truy cập phần tử qua chỉ số
-    T& operator[](int index) {
+    T &operator[](int index)
+    {
         if (index < 0 || index >= size)
             throw out_of_range("Index out of range");
         return data[index];
     }
 
-    const T& operator[](int index) const {
+    const T &operator[](int index) const
+    {
         if (index < 0 || index >= size)
             throw out_of_range("Index out of range");
         return data[index];
@@ -68,7 +89,8 @@ public:
 
     int getSize() const { return size; }
 
-    void printAll() const {
+    void printAll() const
+    {
         for (int i = 0; i < size; ++i)
             cout << i << ": " << data[i] << endl;
     }
