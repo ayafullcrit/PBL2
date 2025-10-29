@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Sử dụng enum class để an toàn hơn về kiểu dữ liệu
-enum class AppState { MAIN_MENU, LOGIN_TUTOR, LOGIN_STUDENT };
+enum class AppState { MAIN_MENU, LOGIN_TUTOR, LOGIN_STUDENT, LOGIN_ADMIN };
 
 int main() {
     // SFML 3.x: sf::VideoMode bây giờ nhận một sf::Vector2u
@@ -11,11 +11,9 @@ int main() {
     window.setFramerateLimit(60);
 
     sf::Font font;
-    // BẬT LẠI ĐOẠN CODE NÀY ĐỂ TẢI FONT
-    if (!font.openFromFile("NotoSans_Condensed-Black.ttf")) {
-        // Tôi đã sửa lỗi cú pháp nhỏ ở đây (từ :std: thành std::)
-        std::cout << L"Lỗi: Không tìm thấy hoặc không thể đọc file font NotoSans_Condensed-Black.ttf\n";
-        return -1; // Thoát nếu không tải được font
+    if (!font.openFromFile("Arial.ttf")) {
+        std::cout << L"Lỗi: Không tìm thấy hoặc không thể đọc file font Arial.ttf\n";
+        return -1;
     }
 
     AppState currentState = AppState::MAIN_MENU;
@@ -29,7 +27,6 @@ int main() {
     sf::Color textGray(180, 180, 180);
 
     // --- Tiêu đề ---
-    // Giờ đây các đối tượng Text sẽ được tạo với font đã nạp
     sf::Text title1(font, L"Chào mừng đến với ", 48);
     title1.setFillColor(textLight);
     title1.setStyle(sf::Text::Bold);
@@ -38,53 +35,86 @@ int main() {
     sf::Text title2(font, L"TutorConnect", 48);
     title2.setFillColor(accentColor);
     title2.setStyle(sf::Text::Bold);
-    title2.setPosition({title1.getPosition().x + title1.getGlobalBounds().size.x + 5.f, 60.f});
+    title2.setPosition({title1.getPosition().x + title1.getLocalBounds().size.x + 5.f, 60.f});
 
     sf::Text desc(font, L"Vui lòng chọn vai trò của bạn để bắt đầu hành trình dạy và học.", 22);
     desc.setFillColor(textGray);
     desc.setPosition({250.f, 130.f});
 
-    // --- Hai hộp chọn ---
-    sf::RectangleShape tutorBox({400.f, 200.f});
-    tutorBox.setPosition({180.f, 280.f});
+    // --- Tính toán vị trí 3 hộp cân đối ---
+    float boxWidth = 300.f;
+    float boxHeight = 200.f;
+    float totalWidth = 1150.f;
+    float gap = (totalWidth - (boxWidth * 3)) / 4; // Khoảng cách đều giữa các hộp
+    
+    // --- Ba hộp chọn ---
+    sf::RectangleShape tutorBox({boxWidth, boxHeight});
+    tutorBox.setPosition({gap, 280.f});
     tutorBox.setFillColor(boxColor);
     tutorBox.setOutlineThickness(2);
     tutorBox.setOutlineColor(borderColor);
 
-    sf::RectangleShape studentBox({400.f, 200.f});
-    studentBox.setPosition({630.f, 280.f});
+    sf::RectangleShape studentBox({boxWidth, boxHeight});
+    studentBox.setPosition({gap * 2 + boxWidth, 280.f});
     studentBox.setFillColor(boxColor);
     studentBox.setOutlineThickness(2);
     studentBox.setOutlineColor(borderColor);
 
+    sf::RectangleShape adminBox({boxWidth, boxHeight});
+    adminBox.setPosition({gap * 3 + boxWidth * 2, 280.f});
+    adminBox.setFillColor(boxColor);
+    adminBox.setOutlineThickness(2);
+    adminBox.setOutlineColor(borderColor);
+
     // --- Biểu tượng ---
     sf::CircleShape tutorIcon(25.f);
     tutorIcon.setFillColor(accentColor);
-    tutorIcon.setPosition({180.f + 400.f / 2.f - 25.f, 300.f});
+    tutorIcon.setPosition({gap + boxWidth / 2.f - 25.f, 300.f});
 
     sf::RectangleShape studentIcon({50.f, 30.f});
     studentIcon.setFillColor(accentColor);
-    studentIcon.setPosition({630.f + 400.f / 2.f - 25.f, 305.f});
+    studentIcon.setPosition({gap * 2 + boxWidth + boxWidth / 2.f - 25.f, 305.f});
 
-    // --- Văn bản hộp 1 ---
+    // Thêm biểu tượng cho admin (hình lục giác)
+    sf::CircleShape adminIcon(25.f, 6);
+    adminIcon.setFillColor(accentColor);
+    adminIcon.setPosition({gap * 3 + boxWidth * 2 + boxWidth / 2.f - 25.f, 300.f});
+
+    // --- Văn bản hộp 1 (Gia sư) ---
     sf::Text tutorTitle(font, L"Tôi là Gia sư", 26);
     tutorTitle.setFillColor(textLight);
     tutorTitle.setStyle(sf::Text::Bold);
-    tutorTitle.setPosition({180.f + 400.f / 2.f - tutorTitle.getGlobalBounds().size.x / 2.f, 360.f});
+    float tutorTitleX = gap + boxWidth / 2.f - tutorTitle.getLocalBounds().size.x / 2.f;
+    tutorTitle.setPosition({tutorTitleX, 360.f});
 
     sf::Text tutorDesc(font, L"Quản lý lớp học\nDuyệt học viên\nTheo dõi tiến độ học tập", 18);
     tutorDesc.setFillColor(textGray);
-    tutorDesc.setPosition({180.f + 400.f / 2.f - tutorDesc.getGlobalBounds().size.x / 2.f, 400.f});
+    float tutorDescX = gap + boxWidth / 2.f - tutorDesc.getLocalBounds().size.x / 2.f;
+    tutorDesc.setPosition({tutorDescX, 400.f});
 
-    // --- Văn bản hộp 2 ---
+    // --- Văn bản hộp 2 (Học viên) ---
     sf::Text studentTitle(font, L"Tôi là Học viên", 26);
     studentTitle.setFillColor(textLight);
     studentTitle.setStyle(sf::Text::Bold);
-    studentTitle.setPosition({630.f + 400.f / 2.f - studentTitle.getGlobalBounds().size.x / 2.f, 360.f});
+    float studentTitleX = gap * 2 + boxWidth + boxWidth / 2.f - studentTitle.getLocalBounds().size.x / 2.f;
+    studentTitle.setPosition({studentTitleX, 360.f});
 
     sf::Text studentDesc(font, L"Tìm kiếm gia sư phù hợp\nĐăng ký môn học theo mong muốn", 18);
     studentDesc.setFillColor(textGray);
-    studentDesc.setPosition({630.f + 400.f / 2.f - studentDesc.getGlobalBounds().size.x / 2.f, 400.f});
+    float studentDescX = gap * 2 + boxWidth + boxWidth / 2.f - studentDesc.getLocalBounds().size.x / 2.f;
+    studentDesc.setPosition({studentDescX, 400.f});
+
+    // --- Văn bản hộp 3 (Admin) ---
+    sf::Text adminTitle(font, L"Tôi là Admin", 26);
+    adminTitle.setFillColor(textLight);
+    adminTitle.setStyle(sf::Text::Bold);
+    float adminTitleX = gap * 3 + boxWidth * 2 + boxWidth / 2.f - adminTitle.getLocalBounds().size.x / 2.f;
+    adminTitle.setPosition({adminTitleX, 360.f});
+
+    sf::Text adminDesc(font, L"Quản lý hệ thống\nGiám sát người dùng\nPhân quyền truy cập", 18);
+    adminDesc.setFillColor(textGray);
+    float adminDescX = gap * 3 + boxWidth * 2 + boxWidth / 2.f - adminDesc.getLocalBounds().size.x / 2.f;
+    adminDesc.setPosition({adminDescX, 400.f});
 
     // --- FORM ĐĂNG NHẬP ---
     sf::RectangleShape loginBox({500.f, 300.f});
@@ -124,8 +154,8 @@ int main() {
 
     // --- Main Loop ---
     while (window.isOpen()) {
-        // SFML 3.x: Vòng lặp sự kiện đã thay đổi hoàn toàn
-        while (const auto event = window.pollEvent()) {
+        // SFML 3.x: Vòng lặp sự kiện
+        while (std::optional <sf::Event> event = window.pollEvent()) {
             // Kiểm tra sự kiện đóng cửa sổ
             if (event->is<sf::Event::Closed>()) {
                 window.close();
@@ -140,15 +170,17 @@ int main() {
                         currentState = AppState::LOGIN_TUTOR;
                     } else if (studentBox.getGlobalBounds().contains(mousePos)) {
                         currentState = AppState::LOGIN_STUDENT;
+                    } else if (adminBox.getGlobalBounds().contains(mousePos)) {
+                        currentState = AppState::LOGIN_ADMIN; // Thêm xử lý cho admin
                     }
                 }
             }
 
-            // Xử lý logic cho màn hình đăng nhập (chung cho cả hai)
-            if ((currentState == AppState::LOGIN_TUTOR || currentState == AppState::LOGIN_STUDENT)) {
-                 // Lấy sự kiện nhấn phím
+            // Xử lý logic cho màn hình đăng nhập (chung cho cả ba)
+            if ((currentState == AppState::LOGIN_TUTOR || 
+                 currentState == AppState::LOGIN_STUDENT || 
+                 currentState == AppState::LOGIN_ADMIN)) {
                 if (const auto* keyEvent = event->getIf<sf::Event::KeyPressed>()) {
-                    // SFML 3.x: sf::Keyboard::Escape đổi thành sf::Keyboard::Key::Escape
                     if (keyEvent->code == sf::Keyboard::Key::Escape) {
                         currentState = AppState::MAIN_MENU;
                     }
@@ -164,13 +196,18 @@ int main() {
             window.draw(desc);
             window.draw(tutorBox);
             window.draw(studentBox);
+            window.draw(adminBox);
             window.draw(tutorIcon);
             window.draw(studentIcon);
+            window.draw(adminIcon);
             window.draw(tutorTitle);
             window.draw(tutorDesc);
             window.draw(studentTitle);
             window.draw(studentDesc);
-        } else { // Màn hình đăng nhập
+            window.draw(adminTitle);
+            window.draw(adminDesc);
+
+        } else { // Màn hình đăng nhập (chung cho cả ba)
             window.draw(loginBox);
             window.draw(loginTitle);
             window.draw(usernameLabel);
@@ -179,6 +216,20 @@ int main() {
             window.draw(inputPass);
             window.draw(loginButton);
             window.draw(loginText);
+            
+            // Hiển thị thêm thông tin về loại đăng nhập
+            sf::Text loginType(font, L"", 24);
+            loginType.setFillColor(accentColor);
+            loginType.setPosition({400.f, 150.f});
+            
+            if (currentState == AppState::LOGIN_TUTOR) {
+                loginType.setString(L"Đăng nhập với tư cách Gia sư");
+            } else if (currentState == AppState::LOGIN_STUDENT) {
+                loginType.setString(L"Đăng nhập với tư cách Học viên");
+            } else if (currentState == AppState::LOGIN_ADMIN) {
+                loginType.setString(L"Đăng nhập với tư cách Admin");
+            }
+            window.draw(loginType);
         }
 
         window.display();
