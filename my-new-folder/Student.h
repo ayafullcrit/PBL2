@@ -23,17 +23,15 @@ public:
     string GetRole() const override { return "Hoc sinh"; };
     void DisplayInfo() const override;
     //
-    MyVector<Tutor *>& GetTutorList() { return TutorList; };
+    MyVector<Tutor *> &GetTutorList() { return TutorList; };
     int GetGradeLevel() const { return GradeLevel; }
     void SetGradeLevel(const int &gradelevel) { GradeLevel = gradelevel; }
     //  class's method
-    Student& operator=(const Student&);
-    void AddSubject(Subject &);
-    void AddTutor(Tutor &);
+    Student &operator=(const Student &);
+    void AddSubject(Subject *);
+    void AddTutor(Tutor *);
     void Show_SubjectList();
     void Show_TutorList();
     void PayCost(Subject &);
-    void Rating(Tutor &, const double &);
-    // void AddStudent()
-    //
+    void Rating(Tutor & , const double &);
 };

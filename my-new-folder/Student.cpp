@@ -47,15 +47,15 @@ void Student::DisplayInfo() const
     this->User::DisplayInfo();
     cout << "Lop: " << GradeLevel << endl;
 }
-void Student::AddSubject(Subject &NewSubject)
+void Student::AddSubject(Subject* NewSubject)
 {
-    cout << "Da them mon " << NewSubject.GetName() << " thanh cong!\n";
-    this->SubjectList.push_back(&NewSubject);
+    cout << "Da them mon " << NewSubject->GetName() << " thanh cong!\n";
+    this->SubjectList.push_back(NewSubject);
 }
-void Student::AddTutor(Tutor &NewTutor)
+void Student::AddTutor(Tutor* NewTutor)
 {
-    cout << "Da them giao vien " << NewTutor.GetName() << endl;
-    this->TutorList.push_back(&NewTutor);
+    cout << "Da them giao vien " << NewTutor->GetName() << endl;
+    this->TutorList.push_back(NewTutor);
 }
 void Student::Show_SubjectList()
 {

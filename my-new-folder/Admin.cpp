@@ -112,8 +112,9 @@ void Admin::RegisterNewUser()
 {
     RegisData data;
     cout << "----- Dang ky tai khoan moi -----" << endl;
-    data.ID = GenID(Admin::UserList);
-    cout << "ID: " << data.ID << endl;
+    cout << "Nhap ID tai khoan: ";
+    cin >> data.ID;
+    cin.ignore();
     do
     {
         cout << "Nhap vai tro (Gia su/Hoc vien): ";
@@ -154,24 +155,22 @@ void Admin::RegisterNewUser()
             normalize_string(subject);
             cout << "-Nhap hoc phi cho mon " << subject << " : ";
             cin >> cost;
-            data.Subjects.push_back(Subject(subject, cost, ID));
+            data.Subjects.push_back(new Subject(subject, cost, ID));
             cin.ignore();
         }
     }
     if (!ValidateRegisData(data))
         return;
-    // Student* tempstd;
-    // Tutor* temptt;
     if (data.Role == "Student")
     {
-        Student *newStudent = new Student(data.ID, data.Name, data.Password, data.Location, data.Balance, data.GradeLevel);
+        Student *newStudent = new Student(data.ID, data.Name, data.Location, data.Password, data.Balance, data.GradeLevel);
         //  tempstd = tempstd;
         StudentList.push_back(newStudent);
         UserList.push_back(static_cast<User *>(newStudent));
     }
     else if (data.Role == "Tutor")
     {
-        Tutor *newTutor = new Tutor(data.ID, data.Name, data.Password, data.Location, data.Balance, data.subjectCount);
+        Tutor *newTutor = new Tutor(data.ID, data.Name, data.Location, data.Password, data.Balance, data.subjectCount);
         //  temptt = newTutor;
         for (int i = 0; i < data.Subjects.getSize(); ++i)
         {
@@ -205,10 +204,10 @@ void Admin::RegisterNewUser()
         ofstream outfile2("SubjectRecord.txt", ios::app); // Subject's data file
         for (int i = 0; i < data.Subjects.getSize(); i++)
         {
-            outfile << data.Subjects[i].GetID() << endl;
-            outfile2 << data.Subjects[i].GetID() << endl
-                     << data.Subjects[i].GetName() << endl
-                     << data.Subjects[i].GetCost() << endl
+            outfile << data.Subjects[i]->GetID() << endl;
+            outfile2 << data.Subjects[i]->GetID() << endl
+                     << data.Subjects[i]->GetName() << endl
+                     << data.Subjects[i]->GetCost() << endl
                      << 0 << endl          // default student count
                      << "_______" << endl; // end of a subject record
         }
@@ -222,6 +221,7 @@ void Admin::RegisterNewUser()
     }
     outfile << "_______" << endl; // end of a user record
     outfile.close();
+    // this->LoadData();
 }
 Admin::Admin()
 {
@@ -267,7 +267,7 @@ void Reset(RegisData &data)
     data.Balance = 0;
     data.Role = "";
     data.GradeLevel = 0;
-    data.Subjects = MyVector<Subject>();
+    data.Subjects = MyVector<Subject *>();
 }
 void Admin::LoadData()
 {
@@ -442,7 +442,7 @@ void Admin::LoadData()
 Tutor *Admin::LoginTutor(const string &id, const string &password)
 {
     Tutor *tutor = GetTutorByID(id);
-    cout << tutor->GetPassword() << ' ' << password << endl;
+    //cout << tutor->GetPassword() << ' ' << password << endl;
     if (tutor != nullptr)
     {
         if (tutor->Authenticate(password))
@@ -464,6 +464,7 @@ Student *Admin::LoginStudent(const string &id, const string &password)
 {
     Student *student = GetstdByID(id);
     if (student != nullptr)
+    {
         if (student->Authenticate(password))
         {
             cout << "Dang nhap thanh cong! Chao mung Hoc sinh " << student->GetName() << endl;
@@ -475,6 +476,7 @@ Student *Admin::LoginStudent(const string &id, const string &password)
             cout << "Mat khau khong dung!" << endl;
             return nullptr;
         }
+    }
     cout << "Khong tim thay hoc sinh voi ID nay!" << endl;
     return nullptr;
 }
@@ -750,7 +752,7 @@ void Admin::FindTutor(Student *student)
 
                     if (!alreadyExists)
                     {
-                        student->AddTutor(*selectedTutor);
+                        student->AddTutor(selectedTutor);
                         cout << "Da them gia su " << selectedTutor->GetName() << " vao danh sach!" << endl;
                     }
                     else
@@ -771,4 +773,8 @@ void Admin::FindTutor(Student *student)
             cin.get();
         }
     } while (choice != 5);
+}
+Admin::~Admin()
+{
+    SaveAllData();
 }

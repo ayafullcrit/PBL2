@@ -36,9 +36,9 @@ public:
     SubjectRecord* operator[](int);
     Tutor& operator=(const Tutor&);
     //  class's method
-    void AddSubject(Subject &);
+    void AddSubject(Subject* );
     void AddSubject(const string &);
-    void addStudentToSubject(Student &, Subject &s);
+    void addStudentToSubject(Student* , Subject*);
     void Show_SubjectList();
     void Show_StudentList();
     void DeleteStudent(Student&);

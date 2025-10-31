@@ -39,24 +39,24 @@ void Tutor::DisplayInfo() const
     else
         cout << "Chua co danh gia" << endl;
 }
-void Tutor::AddSubject(Subject &NewSubject)
+void Tutor::AddSubject(Subject* NewSubject)
 {
     //  cout << "Da them mon " << NewSubject.GetName() << "!" << endl;
-    Subject *newSubjPtr = new Subject(NewSubject);
-    this->SubjectList.push_back(new SubjectRecord(newSubjPtr));
+    SubjectRecord* newSubjRec = new SubjectRecord(NewSubject);
+    this->SubjectList.push_back(newSubjRec);
 }
 void Tutor::AddSubject(const string &subjectName)
 {
     Subject subject(subjectName);
-    AddSubject(subject);
+    AddSubject(&subject);
 }
-void Tutor::addStudentToSubject(Student &NewStudent, Subject &s)
+void Tutor::addStudentToSubject(Student* NewStudent, Subject* s)
 {
     for (int i = 0; i < this->SubjectList.getSize(); ++i)
     {
-        if (this->SubjectList[i]->GetSubject()->GetName() == s.GetName())
+        if (this->SubjectList[i]->GetSubject()->GetName() == s->GetName())
         {
-            this->SubjectList[i]->AddStudent(&NewStudent);
+            this->SubjectList[i]->AddStudent(NewStudent);
             return;
         }
     }

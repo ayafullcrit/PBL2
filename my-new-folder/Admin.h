@@ -13,7 +13,7 @@ struct RegisData
     string Location;
     int Balance;
     int subjectCount;
-    MyVector<Subject> Subjects;
+    MyVector<Subject*> Subjects;
     MyVector<string> TutorIDs;
     MyVector<string> SubjectIDs;
     int TutorCount;
@@ -32,7 +32,7 @@ private:
 
 public:
     Admin();
-    ~Admin() = default;
+    ~Admin();
     // getter
     MyVector<Tutor *> &getTutorList()
     {
@@ -57,8 +57,8 @@ public:
     SubjectRecord *GetsrByID(const string &);
     Student *GetstdByID(const string &id);
     Tutor *GetTutorByID(const string &id);
-    friend void UserLoad();
     void LoadData();
+    void SaveAllData();
     void RegisterNewUser();
     Tutor *LoginTutor(const string &id, const string &password);
     Student *LoginStudent(const string &id, const string &password);
