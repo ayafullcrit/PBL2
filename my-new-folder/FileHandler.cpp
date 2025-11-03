@@ -1,5 +1,5 @@
 #include "FileHandler.h"
-
+#include "Admin.h"
 const string FileHandler::TUTOR_FILE = "Tutor.txt";
 const string FileHandler::STUDENT_FILE = "Student.txt";
 const string FileHandler::SUBJECT_RECORD_FILE = "SubjectRecord.txt";
@@ -193,8 +193,10 @@ bool FileHandler::LoadSubjectRecords(MyVector<SubjectRecord *> &subjectRecords,
     return true;
 }
 
-bool FileHandler::SaveTutors(MyVector<Tutor *> &tutors)
-{
+bool FileHandler::SaveTutors()
+{   
+    Admin d;
+    MyVector<Tutor* >& tutors = d.getTutorList();
     ofstream file(TUTOR_FILE, ios::trunc);
     if (!file.is_open())
     {
@@ -228,8 +230,10 @@ bool FileHandler::SaveTutors(MyVector<Tutor *> &tutors)
     return true;
 }
 
-bool FileHandler::SaveStudents(MyVector<Student *> &students)
+bool FileHandler::SaveStudents()
 {
+    Admin d;
+    MyVector<Student *> &students = d.getStudentList();
     ofstream file(STUDENT_FILE, ios::trunc);
     if (!file.is_open())
     {
@@ -264,8 +268,10 @@ bool FileHandler::SaveStudents(MyVector<Student *> &students)
     return true;
 }
 
-bool FileHandler::SaveSubjectRecords(MyVector<Tutor *> &tutors)
+bool FileHandler::SaveSubjectRecords()
 {
+    Admin d;
+    MyVector<Tutor *> &tutors = d.getTutorList();
     ofstream file(SUBJECT_RECORD_FILE, ios::trunc);
     if (!file.is_open())
     {
@@ -308,10 +314,88 @@ bool FileHandler::SaveSubjectRecords(MyVector<Tutor *> &tutors)
 bool FileHandler::SaveAllData(MyVector<Tutor *> &tutors, MyVector<Student *> &students)
 {
     bool success = true;
-    success &= SaveTutors(tutors);
-    success &= SaveStudents(students);
-    success &= SaveSubjectRecords(tutors);
+    success &= SaveTutors();
+    success &= SaveStudents();
+    success &= SaveSubjectRecords();
     return success;
+}
+
+bool FileHandler::AppendTutorToFile(Tutor *tutor)
+{
+    ofstream file(TUTOR_FILE, ios::app);
+    if (!file.is_open())
+    {
+        return false;
+    }
+
+    file << tutor->GetID() << endl;
+    file << tutor->GetName() << endl;
+    file << tutor->GetPassword() << endl;
+    file << tutor->GetLocation() << endl;
+    file << tutor->GetBalance() << endl;
+    file << tutor->GetRating() << endl;
+
+    MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
+    file << subjectList.getSize() << endl;
+
+    for (int j = 0; j < subjectList.getSize(); ++j)
+    {
+        file << subjectList[j]->GetID() << endl;
+    }
+
+    file << "_______" << endl;
+
+    file.close();
+    return true;
+}
+
+bool FileHandler::AppendStudentToFile(Student *student)
+{
+    ofstream file(STUDENT_FILE, ios::app);
+    if (!file.is_open())
+    {
+        return false;
+    }
+
+    file << student->GetID() << endl;
+    file << student->GetName() << endl;
+    file << student->GetPassword() << endl;
+    file << student->GetLocation() << endl;
+    file << student->GetBalance() << endl;
+    file << student->GetGradeLevel() << endl;
+    file << "0" << endl; // Tutor count
+    file << "0" << endl; // Subject count
+    file << "_______" << endl;
+
+    file.close();
+    return true;
+}
+
+bool FileHandler::AppendSubjectRecordToFile(SubjectRecord *subjectRecord)
+{
+    ofstream file(SUBJECT_RECORD_FILE, ios::app);
+    if (!file.is_open())
+    {
+        return false;
+    }
+
+    Subject *subject = subjectRecord->GetSubject();
+    MyVector<Student *> &studentList = subjectRecord->GetStudentList();
+
+    file << subjectRecord->GetID() << endl;
+    file << subject->GetName() << endl;
+    file << subject->GetCost() << endl;
+    file << studentList.getSize() << endl;
+
+    for (int k = 0; k < studentList.getSize(); ++k)
+    {
+        file << studentList[k]->GetID() << endl;
+    }
+
+    file << "_______" << endl;
+
+    file.close();
+    return true;
 }
 
 bool FileHandler::BackupData()

@@ -24,13 +24,17 @@ public:
                                   MyVector<Tutor*>& tutors, MyVector<Student*>& students);
     
     // Save methods
-    static bool SaveTutors(MyVector<Tutor*>& tutors);
-    static bool SaveStudents(MyVector<Student*>& students);
-    static bool SaveSubjectRecords(MyVector<Tutor*>& tutors);
+    static bool SaveTutors();
+    static bool SaveStudents();
+    static bool SaveSubjectRecords();
     
     // Utility methods
     static bool SaveAllData(MyVector<Tutor*>& tutors, MyVector<Student*>& students);
     static bool BackupData();
     static bool ValidateFile(const string& filename);
     
+    // Specific write operations for registration
+    static bool AppendTutorToFile(Tutor* tutor);
+    static bool AppendStudentToFile(Student* student);
+    static bool AppendSubjectRecordToFile(SubjectRecord* subjectRecord);
 };
