@@ -1,7 +1,7 @@
 #include "Admin.h"
 #include "SubjectRecord.h"
 #include "Tutor.h"
-
+#include "FileHandler.h"
 void displayStudentMenu(Student *student, Admin &admin)
 {
     int choice;
@@ -29,6 +29,7 @@ void displayStudentMenu(Student *student, Admin &admin)
             break;
         case 2:
             student->UpdateInfo();
+            FileHandler::SaveStudents();
             break;
         case 3:
             cout << "So du hien tai: " << student->GetBalance() << " VND" << endl;
@@ -41,6 +42,7 @@ void displayStudentMenu(Student *student, Admin &admin)
             student->Deposit(amount);
             cout << "Nap tien thanh cong! So du moi: " << student->GetBalance() << " VND" << endl;
             break;
+            FileHandler::SaveStudents();
         }
         case 5:
             student->Show_SubjectList();
@@ -50,7 +52,7 @@ void displayStudentMenu(Student *student, Admin &admin)
             break;
         case 7:
         {
-            admin.FindTutor(student); 
+            admin.FindTutor(student);
             break;
         }
         case 8:
@@ -83,7 +85,8 @@ void displayStudentMenu(Student *student, Admin &admin)
             cin >> rating;
             cin.ignore();
 
-            student->Rating(*selectedTutor, rating);
+            student->Rating(selectedTutor, rating);
+            FileHandler::SaveTutors();
             break;
         }
         case 0:
@@ -128,6 +131,7 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
             break;
         case 2:
             tutor->UpdateInfo();
+            FileHandler::SaveTutors();
             break;
         case 3:
             cout << "So du hien tai: " << tutor->GetBalance() << " VND" << endl;
@@ -148,9 +152,12 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
             cin >> cost;
             cin.ignore();
 
-            Subject* newSubject = new Subject(subjectName, cost);
+            Subject *newSubject = new Subject(subjectName, cost);
             tutor->AddSubject(newSubject);
+            SubjectRecord* t = tutor->getSubjectList()[tutor->getSubjectList().getSize() - 1];
+            admin.getSrList().push_back(t);
             cout << "Da them mon hoc: " << subjectName << " voi hoc phi: " << cost << endl;
+            FileHandler::SaveTutors();
             break;
         }
         case 7:
@@ -165,11 +172,13 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
             {
                 Subject *subject = tutor->getSubjectList()[subjectIndex - 1]->GetSubject();
                 subject->Update_SubjectInfo();
+                FileHandler::SaveSubjectRecords();
             }
             else
             {
                 cout << "So thu tu khong hop le!" << endl;
             }
+            FileHandler::SaveTutors();
             break;
         }
         case 8:
@@ -196,7 +205,7 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
 int main()
 {
     Admin admin;
-   int mainChoice;
+    int mainChoice;
     cout << "CHUONG TRINH QUAN LY GIA SU - KHOI TAO THANH CONG!" << endl;
 
     do
@@ -277,6 +286,6 @@ int main()
             cout << "Lua chon khong hop le!" << endl;
         }
     } while (mainChoice != 5);
-
+    admin.SaveAllData();
     return 0;
 }

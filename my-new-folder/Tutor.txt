@@ -22,9 +22,10 @@ Dac Tri
 ddtt
 Hue
 0
-0
-1
+5
+2
 990733
+SUBJ0000
 _______
 giasumoi
 Dang Phong
@@ -34,4 +35,24 @@ Da Nang
 0
 1
 721245
+_______
+giaden
+Gia Van Den
+nigga
+Chau Phi
+0
+5
+2
+454327
+021772
+_______
+giaden
+Gia Van Den
+nigga
+Chau Phi
+0
+5
+2
+454327
+021772
 _______

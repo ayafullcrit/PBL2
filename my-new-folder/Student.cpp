@@ -124,7 +124,7 @@ Student &Student::operator=(const Student &other)
 
     return *this;
 }
-void Student::Rating(Tutor &tutor, const double &rating)
+void Student::Rating(Tutor* tutor, const double &rating)
 {
     if (rating < 0 || rating > 5) {
         cout << "Diem danh gia phai tu 0 den 5!" << endl;
@@ -132,16 +132,16 @@ void Student::Rating(Tutor &tutor, const double &rating)
     }
     
     // Tính điểm trung bình mới
-    double currentTotal = tutor.GetRating() * tutor.GetNumOfRatings();
+    double currentTotal = tutor->GetRating() * tutor->GetNumOfRatings();
     double newTotal = currentTotal + rating;
-    int newNumRatings = tutor.GetNumOfRatings() + 1;
+    int newNumRatings = tutor->GetNumOfRatings() + 1;
     double newRating = newTotal / newNumRatings;
     
     // Cập nhật đánh giá
-    tutor.SetRating(newRating);
-    tutor.SetNumOfRatings(newNumRatings);
+    tutor->SetRating(newRating);
+    tutor->SetNumOfRatings(newNumRatings);
     
-    cout << "Da danh gia gia su " << tutor.GetName() << " voi diem so: "
+    cout << "Da danh gia gia su " << tutor->GetName() << " voi diem so: "
          << rating << "/5" << endl;
     cout << "Diem trung binh hien tai: " << newRating << "/5" << endl;
     cout << "Tong so luot danh gia: " << newNumRatings << endl;

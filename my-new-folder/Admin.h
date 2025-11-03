@@ -42,7 +42,9 @@ public:
     {
         return StudentList;
     }
-
+    MyVector<SubjectRecord* >& getSrList(){
+        return srList;
+    }
     //
     friend bool ValidateRegisData(RegisData &data);
     friend string GenID();

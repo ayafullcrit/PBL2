@@ -2,6 +2,7 @@
 #include "Tutor.h"
 #include "SubjectRecord.h"
 #include "time.h"
+#include "FileHandler.h"
 #include <fstream>
 #include <sstream>
 string TutorDB = "Tutor.txt";
@@ -167,6 +168,7 @@ void Admin::RegisterNewUser()
         //  tempstd = tempstd;
         StudentList.push_back(newStudent);
         UserList.push_back(static_cast<User *>(newStudent));
+        FileHandler::AppendStudentToFile(newStudent);
     }
     else if (data.Role == "Tutor")
     {
@@ -175,53 +177,15 @@ void Admin::RegisterNewUser()
         for (int i = 0; i < data.Subjects.getSize(); ++i)
         {
             newTutor->AddSubject(data.Subjects[i]);
+            SubjectRecord* sr = new SubjectRecord(data.Subjects[i]);
+            this->srList.push_back(sr);
+            FileHandler::AppendSubjectRecordToFile(sr);
         }
         TutorList.push_back(newTutor);
         UserList.push_back(static_cast<User *>(newTutor));
+        FileHandler::AppendTutorToFile(newTutor);
     }
     cout << "Dang ky tai khoan thanh cong!" << endl;
-
-    // write to file//
-
-    string filename;
-    if (data.Role == "Student")
-        filename = "Student.txt";
-    else
-        filename = "Tutor.txt";
-    // common info
-    ofstream outfile(filename, ios::app);
-    outfile << data.ID << endl
-            << data.Name << endl
-            << data.Password << endl
-            << data.Location << endl
-            << data.Balance << endl;
-
-    // specific info
-    if (data.Role == "Tutor")
-    {
-        outfile << "0" << endl // default rating
-                << data.subjectCount << endl;
-        ofstream outfile2("SubjectRecord.txt", ios::app); // Subject's data file
-        for (int i = 0; i < data.Subjects.getSize(); i++)
-        {
-            outfile << data.Subjects[i]->GetID() << endl;
-            outfile2 << data.Subjects[i]->GetID() << endl
-                     << data.Subjects[i]->GetName() << endl
-                     << data.Subjects[i]->GetCost() << endl
-                     << 0 << endl          // default student count
-                     << "_______" << endl; // end of a subject record
-        }
-        outfile2.close();
-    }
-    if (data.Role == "Student")
-    {
-        outfile << data.GradeLevel << endl;
-        outfile << 0 << endl; // default tutor count
-        outfile << 0 << endl; // default subject count
-    }
-    outfile << "_______" << endl; // end of a user record
-    outfile.close();
-    // this->LoadData();
 }
 Admin::Admin()
 {
@@ -258,186 +222,16 @@ Tutor *Admin::GetTutorByID(const string &id)
     }
     return nullptr;
 }
-void Reset(RegisData &data)
-{
-    data.ID = "";
-    data.Name = "";
-    data.Password = "";
-    data.Location = "";
-    data.Balance = 0;
-    data.Role = "";
-    data.GradeLevel = 0;
-    data.Subjects = MyVector<Subject *>();
-}
 void Admin::LoadData()
 {
-    // Load Student data
-    ifstream stdfile(StudentDB);
-    string line;
-
-    while (getline(stdfile, line))
-    {
-        if (line.empty() || line == "_______")
-            continue;
-
-        RegisData data;
-        data.Role = "Student";
-        data.ID = line; // UserID
-
-        getline(stdfile, data.Name);     // UserName
-        getline(stdfile, data.Password); // UserPassword
-        getline(stdfile, data.Location); // UserLocation
-
-        getline(stdfile, line);
-        data.Balance = stoi(line); // UserBalance
-
-        getline(stdfile, line);
-        data.GradeLevel = stoi(line); // UserGrade
-
-        getline(stdfile, line);
-        data.TutorCount = stoi(line); // NumberofTutor
-
-        // Load Tutor IDs
-        for (int i = 0; i < data.TutorCount; ++i)
-        {
-            getline(stdfile, line);
-            data.TutorIDs.push_back(line);
-        }
-
-        getline(stdfile, line);
-        data.subjectCount = stoi(line); // NumberofSubject
-
-        // Load Subject IDs
-        for (int i = 0; i < data.subjectCount; ++i)
-        {
-            getline(stdfile, line);
-            data.SubjectIDs.push_back(line);
-        }
-
-        // Create Student object
-        Student *newStudent = new Student(data.ID, data.Name, data.Location,
-                                          data.Password, data.Balance, data.GradeLevel);
-        StudentList.push_back(newStudent);
-        UserList.push_back(static_cast<User *>(newStudent));
-
-        // Bỏ qua dòng phân cách
-        getline(stdfile, line);
-    }
-    stdfile.close();
-
-    // Load Tutor data
-    ifstream ttfile(TutorDB);
-
-    while (getline(ttfile, line))
-    {
-        if (line.empty() || line == "_______")
-            continue;
-
-        RegisData data;
-        data.Role = "Tutor";
-        data.ID = line; // UserID
-
-        getline(ttfile, data.Name);     // UserName
-        getline(ttfile, data.Password); // UserPassword
-        getline(ttfile, data.Location); // UserLocation
-
-        getline(ttfile, line);
-        data.Balance = stoi(line); // UserBalance
-
-        getline(ttfile, line);
-        data.Rating = stod(line); // UserRating
-
-        getline(ttfile, line);
-        data.subjectCount = stoi(line); // NumberofSubjectRecord
-
-        // Create Tutor object
-        Tutor *newTutor = new Tutor(data.ID, data.Name, data.Location,
-                                    data.Password, data.Balance, data.subjectCount, data.Rating);
-
-        // Load SubjectRecord IDs và thêm vào Tutor
-        for (int i = 0; i < data.subjectCount; ++i)
-        {
-            getline(ttfile, line);
-            // Tạo SubjectRecord tạm thời
-            Subject *subject = new Subject("Temp Subject", 0, line);
-            SubjectRecord *sr = new SubjectRecord(subject);
-            newTutor->getSubjectList().push_back(sr);
-        }
-
-        TutorList.push_back(newTutor);
-        UserList.push_back(static_cast<User *>(newTutor));
-
-        // Bỏ qua dòng phân cách
-        getline(ttfile, line);
-    }
-    ttfile.close();
-
-    // Load SubjectRecord data
-    ifstream srfile(SubjectRecordDB);
-    string subjectID, subjectName, costStr, studentCountStr;
-
-    while (getline(srfile, subjectID))
-    {
-        if (subjectID.empty() || subjectID == "_______")
-            continue;
-
-        getline(srfile, subjectName);
-        getline(srfile, costStr);
-        getline(srfile, studentCountStr);
-
-        int cost = stoi(costStr);
-        int studentCount = stoi(studentCountStr);
-
-        // Tìm và cập nhật SubjectRecord trong các Tutor
-        for (int i = 0; i < TutorList.getSize(); ++i)
-        {
-            Tutor *tutor = TutorList[i];
-            MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
-
-            for (int j = 0; j < subjectList.getSize(); ++j)
-            {
-                if (subjectList[j]->GetID() == subjectID)
-                {
-                    // Update Subject info
-                    delete subjectList[j]->GetSubject();
-                    Subject *subject = new Subject(subjectName, cost, subjectID);
-
-                    delete subjectList[j];
-                    subjectList[j] = new SubjectRecord(subject);
-                    break;
-                }
-            }
-        }
-
-        // Load Student IDs and add to SubjectRecord
-        for (int i = 0; i < studentCount; ++i)
-        {
-            getline(srfile, line);
-            Student *student = GetstdByID(line);
-            if (student != nullptr)
-            {
-                // Find the SubjectRecord and add Student
-                for (int i = 0; i < TutorList.getSize(); ++i)
-                {
-                    Tutor *tutor = TutorList[i];
-                    MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
-                    for (int j = 0; j < subjectList.getSize(); ++j)
-                    {
-                        if (subjectList[j]->GetID() == subjectID)
-                        {
-                            subjectList[j]->AddStudent(student);
-                            // Đồng thời thêm Tutor vào danh sách Tutor của Student
-                            student->GetTutorList().push_back(tutor);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        // skip separator line
-        getline(srfile, line);
-    }
-    srfile.close();
+    FileHandler::LoadTutors(TutorList, UserList);
+    FileHandler::LoadStudents(StudentList, UserList);
+    MyVector<SubjectRecord*> subjectRecords; // Temporary, not stored
+    FileHandler::LoadSubjectRecords(subjectRecords, TutorList, StudentList);
+}
+void Admin::SaveAllData()
+{
+    FileHandler::SaveAllData(TutorList, StudentList);
 }
 Tutor *Admin::LoginTutor(const string &id, const string &password)
 {
@@ -457,7 +251,7 @@ Tutor *Admin::LoginTutor(const string &id, const string &password)
             return nullptr;
         }
     }
-    cout << "Khong tim thay gia su voi ID nay!" << endl;
+   // cout << "Khong tim thay gia su voi ID nay!" << endl;
     return nullptr;
 }
 Student *Admin::LoginStudent(const string &id, const string &password)
@@ -753,7 +547,9 @@ void Admin::FindTutor(Student *student)
                     if (!alreadyExists)
                     {
                         student->AddTutor(selectedTutor);
+                        this->TutorList.push_back(selectedTutor);
                         cout << "Da them gia su " << selectedTutor->GetName() << " vao danh sach!" << endl;
+                        FileHandler::SaveStudents();
                     }
                     else
                     {
@@ -776,5 +572,5 @@ void Admin::FindTutor(Student *student)
 }
 Admin::~Admin()
 {
-    SaveAllData();
+    //SaveAllData();
 }

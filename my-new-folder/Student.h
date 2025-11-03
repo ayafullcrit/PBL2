@@ -33,5 +33,5 @@ public:
     void Show_SubjectList();
     void Show_TutorList();
     void PayCost(Subject &);
-    void Rating(Tutor & , const double &);
+    void Rating(Tutor* , const double &);
 };

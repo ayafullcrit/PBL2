@@ -30,7 +30,6 @@ void User::UpdateInfo()
 {
     cout << "Cap nhat thong tin nguoi dung:" << endl;
     cout << "Ten nguoi dung hien tai: " << this->UserName << endl;
-    cin.ignore();
     cout << "Ban can cap nhat ten nguoi dung khong? (Y/N): ";
     char choice;
     cin >> choice;
@@ -44,7 +43,6 @@ void User::UpdateInfo()
     cout << endl;
     cout << "Cap nhat thong tin dia chi:" << endl;
     cout << "Dia chi hien tai: " << this->Location << endl;
-    cin.ignore();
     cout << "Ban can cap nhat dia chi moi hay khong? (Y/N): ";
     cin >> choice;
     if (choice != 'Y' && choice != 'y' && choice != 'N' && choice != 'n')
