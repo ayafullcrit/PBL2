@@ -5,6 +5,8 @@
 #include <cstdlib>
 #define FOR(i, a, b) for (int i = a; i <= b; i++)
 #define Coord pair<int, int>
+#define SE second
+#define FI first
 using namespace std;
 
 void SetWordColor(WORD wAttributes)
@@ -25,6 +27,7 @@ void GetConsoleSize(int &width, int &height) {
     width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
+
 
 int LeftMargin = 50;
 int TopMargin = 2;
@@ -62,15 +65,15 @@ void rectangle(int x, int y, int width, int height)
     char RightTop = 187, LeftTop = 201, LeftBottom = 200, RightBottom = 188;
     char Border = 205, UpBorder = 186;
 
-    SetWordColor(14); // m‡u v‡ng s·ng
+     // m√†u v√†ng s√°ng
 
-    // --- gÛc trÍn ---
+    // --- g√≥c tr√™n ---
     gotoXY(x, y);
     cout << LeftTop;
     for (int i = 0; i < width - 2; i++) cout << Border;
     cout << RightTop;
 
-    // --- th‚n ---
+    // --- th√¢n ---
     for (int i = 0; i < height - 2; i++)
     {
         gotoXY(x, y + i + 1);
@@ -79,11 +82,19 @@ void rectangle(int x, int y, int width, int height)
         cout << UpBorder;
     }
 
-    // --- gÛc du?i ---
+    // --- g√≥c du?i ---
     gotoXY(x, y + height - 1);
     cout << LeftBottom;
     for (int i = 0; i < width - 2; i++) cout << Border;
     cout << RightBottom;
+}
+
+void Resize(int width, int height)
+{
+    HWND console = GetConsoleWindow();
+    RECT r;
+    GetWindowRect(console, &r);
+    MoveWindow(console, r.left, r.top, width, height, TRUE);
 }
 
 void PrintTitle()
@@ -233,16 +244,16 @@ void PrintMenu(){
     SetWordColor(6);
     cout<<"Dang ky tai khoan moi"<<endl;
 
-    // --- ThÍm hu?ng d?n click ---
+    // --- Th√™m hu?ng d?n click ---
     gotoXY(LeftMargin , boxY + 7);
     SetWordColor(10);
     cout << "Click vao mot vai tro de tiep tuc...";
-    SetWordColor(7);
 }
 
 
 // dang nhap cho gia su 
 void LoginTutor() {
+	system("cls");
     int width = 25, height = 4;
     int x = LeftMargin - 2; 
     int y = TopMargin;
@@ -250,7 +261,7 @@ void LoginTutor() {
     // V? khung dang nh?p
     rectangle(x, y, width, height);
 
-    // Hai dÚng ch?
+    // Hai d√≤ng ch?
     string title = "DANG NHAP";
     string subtitle = "voi vai tro gia su";
 
@@ -258,14 +269,14 @@ void LoginTutor() {
     int titleX = x + (width - title.length()) / 2;
     int subtitleX = x + (width - subtitle.length()) / 2;
 
-    SetWordColor(14); // m‡u v‡ng s·ng
+    SetWordColor(14); // m√†u v√†ng s√°ng
     gotoXY(titleX, y + 1);
     SetWordColor(6);
     cout << title;
     gotoXY(subtitleX, y + 2);
     cout << subtitle;
 
-    // Nh?p thÙng tin
+    // Nh?p th√¥ng tin
     string id, password;
     gotoXY(LeftMargin - 5, TopMargin + height + 2);
     SetWordColor(6);
@@ -285,6 +296,7 @@ void LoginTutor() {
 }
 // dang nhap hoc vien
 void LoginStudent() {
+	system("cls");
     int width = 25, height = 4;
     int x = LeftMargin - 2; 
     int y = TopMargin;
@@ -292,7 +304,7 @@ void LoginStudent() {
     // V? khung dang nh?p
     rectangle(x, y, width, height);
 
-    // Hai dÚng ch?
+    // Hai d√≤ng ch?
     string title = "DANG NHAP";
     string subtitle = "voi vai tro hoc vien";
 
@@ -300,14 +312,14 @@ void LoginStudent() {
     int titleX = x + (width - title.length()) / 2;
     int subtitleX = x + (width - subtitle.length()) / 2;
 
-    SetWordColor(14); // m‡u v‡ng s·ng
+    SetWordColor(14); // m√†u v√†ng s√°ng
     gotoXY(titleX, y + 1);
     SetWordColor(6);
     cout << title;
     gotoXY(subtitleX, y + 2);
     cout << subtitle;
 
-    // Nh?p thÙng tin
+    // Nh?p th√¥ng tin
     string id, password;
     gotoXY(LeftMargin - 5, TopMargin + height + 2);
     SetWordColor(6);
@@ -327,7 +339,9 @@ void LoginStudent() {
 }
 
 void ShowTutorMenu() {
-    // K˝ t? khung
+	system("cls");
+    // K√Ω t? khung
+    system("cls");
     char RightTop = 187, LeftTop = 201, LeftBottom = 200, RightBottom = 188;
     char Border = 205, UpBorder = 186, CrossLeft = 204, CrossRight = 185;
 
@@ -343,12 +357,12 @@ void ShowTutorMenu() {
 
     SetWordColor(14);
 
-    // --- DÚng trÍn c˘ng ---
+    // --- D√≤ng tr√™n c√πng ---
     std::cout << std::string(startX, ' ') << LeftTop;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightTop << "\n";
 
-    // --- DÚng tiÍu d? ---
+    // --- D√≤ng ti√™u d? ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padTitle = (boxWidth - 2 - title.size()) / 2;
     SetWordColor(6);
@@ -356,12 +370,12 @@ void ShowTutorMenu() {
     SetWordColor(14);
     std::cout << std::string(boxWidth - 2 - padTitle - title.size(), ' ') << UpBorder << "\n";
 
-    // --- DÚng ngan c·ch ---
+    // --- D√≤ng ngan c√°ch ---
     std::cout << std::string(startX, ' ') << CrossLeft;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << CrossRight << "\n";
 
-    // --- DÚng ch‡o m?ng ---
+    // --- D√≤ng ch√†o m?ng ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padWelcome = (boxWidth - 2 - welcome.size()) / 2;
     SetWordColor(6);
@@ -369,22 +383,22 @@ void ShowTutorMenu() {
     SetWordColor(14);
     std::cout << std::string(boxWidth - 2 - padWelcome - welcome.size(), ' ') << UpBorder << "\n";
 
-    // --- DÚng cu?i ---
+    // --- D√≤ng cu?i ---
     std::cout << std::string(startX, ' ') << LeftBottom;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightBottom << "\n";
 
-    // ======= C·c Ù ch?c nang =======
-    int menuWidth = 34; // tang chi?u r?ng Ù d? ch?a d? ch?
-    int spaceBetween = 10; // kho?ng c·ch gi?a 2 c?t
+    // ======= C√°c √¥ ch?c nang =======
+    int menuWidth = 34; // tang chi?u r?ng √¥ d? ch?a d? ch?
+    int spaceBetween = 10; // kho?ng c√°ch gi?a 2 c?t
     int totalMenuWidth = menuWidth * 2 + spaceBetween;
 
-    int startMenuX = (consoleWidth - totalMenuWidth) / 2; // canh gi?a theo khung trÍn
+    int startMenuX = (consoleWidth - totalMenuWidth) / 2; // canh gi?a theo khung tr√™n
     int leftX = startMenuX;
     int rightX = leftX + menuWidth + spaceBetween;
 
-    int startY = 9; // dÚng b?t d?u phÌa du?i khung
-    int gapY = 3;   // kho?ng c·ch gi?a c·c h‡ng
+    int startY = 9; // d√≤ng b?t d?u ph√≠a du?i khung
+    int gapY = 3;   // kho?ng c√°ch gi?a c√°c h√†ng
 
     // --- C?t 1 & 2 ---
     SetWordColor(14);
@@ -440,7 +454,8 @@ void ShowTutorMenu() {
 }
 
 void ShowStudentMenu() {
-    // K˝ t? khung
+	system("cls");
+    // K√Ω t? khung
     char RightTop = 187, LeftTop = 201, LeftBottom = 200, RightBottom = 188;
     char Border = 205, UpBorder = 186, CrossLeft = 204, CrossRight = 185;
 
@@ -454,60 +469,62 @@ void ShowStudentMenu() {
     int boxWidth = 60;
     int startX = (consoleWidth - boxWidth) / 2;
 
-    // M‡u khung
-    SetWordColor(9); // xanh duong s·ng
+    // M√†u khung
+    SetWordColor(9); // xanh duong s√°ng
 
-    // --- DÚng trÍn c˘ng ---
+    // --- D√≤ng tr√™n c√πng ---
     std::cout << std::string(startX, ' ') << LeftTop;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightTop << "\n";
 
-    // --- DÚng tiÍu d? ---
+    // --- D√≤ng ti√™u d? ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padTitle = (boxWidth - 2 - title.size()) / 2;
-    SetWordColor(1); // ch? xanh duong d?m
+    SetWordColor(6); // ch? xanh duong d?m
     std::cout << std::string(padTitle, ' ') << title;
     SetWordColor(9);
     std::cout << std::string(boxWidth - 2 - padTitle - title.size(), ' ') << UpBorder << "\n";
 
-    // --- DÚng ngan c·ch ---
+    // --- D√≤ng ngan c√°ch ---
     std::cout << std::string(startX, ' ') << CrossLeft;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << CrossRight << "\n";
 
-    // --- DÚng ch‡o m?ng ---
+    // --- D√≤ng ch√†o m?ng ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padWelcome = (boxWidth - 2 - welcome.size()) / 2;
-    SetWordColor(1);
+    SetWordColor(6);
     std::cout << std::string(padWelcome, ' ') << welcome;
     SetWordColor(9);
     std::cout << std::string(boxWidth - 2 - padWelcome - welcome.size(), ' ') << UpBorder << "\n";
 
-    // --- DÚng cu?i ---
+    // --- D√≤ng cu?i ---
     std::cout << std::string(startX, ' ') << LeftBottom;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightBottom << "\n";
 
-    // ======= C·c Ù ch?c nang =======
+    // ======= C√°c √¥ ch?c nang =======
     int menuWidth = 34;
     int spaceBetween = 10;
     int totalMenuWidth = menuWidth * 2 + spaceBetween;
 
     int startMenuX = (consoleWidth - totalMenuWidth) / 2;
-    int leftX = startMenuX;
-    int rightX = leftX + menuWidth + spaceBetween;
+    int leftX = startMenuX; // 21 khung trai
+    int rightX = leftX + menuWidth + spaceBetween;//65 khung b√™n phai 
 
     int startY = 9;
     int gapY = 3;
+    // moi khung co toa do x (21,55)
+    // moi khung co toa do y (9,12)
 
     // --- C?t 1 & 2 ---
-    SetWordColor(9); // m‡u khung xanh duong s·ng
+    SetWordColor(9); // m√†u khung xanh duong s√°ng
     rectangle(leftX, startY, menuWidth, 3);
     rectangle(rightX, startY, menuWidth, 3);
 
-    SetWordColor(1); // ch? xanh duong d?m
+    SetWordColor(6); // ch? xanh duong d?m
     gotoXY(leftX + 1, startY + 1);
-    std::cout << "1. Hien thi thong tin ca nhan";
+    std::cout << "1. Hien thi thong tin ca nhan";  
     gotoXY(rightX + 1, startY + 1);
     std::cout << "2. Cap nhat thong tin ca nhan";
 
@@ -516,7 +533,7 @@ void ShowStudentMenu() {
     rectangle(leftX, startY, menuWidth, 3);
     rectangle(rightX, startY, menuWidth, 3);
 
-    SetWordColor(1);
+    SetWordColor(6);
     gotoXY(leftX + 1, startY + 1);
     std::cout << "3. Kiem tra so du";
     gotoXY(rightX + 1, startY + 1);
@@ -527,7 +544,7 @@ void ShowStudentMenu() {
     rectangle(leftX, startY, menuWidth, 3);
     rectangle(rightX, startY, menuWidth, 3);
 
-    SetWordColor(1);
+    SetWordColor(6);
     gotoXY(leftX + 1, startY + 1);
     std::cout << "5. Hien thi danh sach mon hoc";
     gotoXY(rightX + 1, startY + 1);
@@ -538,33 +555,42 @@ void ShowStudentMenu() {
     rectangle(leftX, startY, menuWidth, 3);
     rectangle(rightX, startY, menuWidth, 3);
 
-    SetWordColor(1);
+    SetWordColor(6);
     gotoXY(leftX + 1, startY + 1);
     std::cout << "7. Tim kiem va them gia su";
     gotoXY(rightX + 1, startY + 1);
     std::cout << "8. Danh gia gia su";
 
-    // --- ‘ –ang Xu?t ---
+    // --- √î √êang Xu?t ---
     int logoutX = 50;
     int logoutY = 23;
     SetWordColor(9);
     rectangle(logoutX, logoutY, 20, 3);
-    SetWordColor(1);
+    SetWordColor(6);
     gotoXY(logoutX + 5, logoutY + 1);
     std::cout << "Dang Xuat" << std::endl;
 
-    SetWordColor(7); // reset v? m?c d?nh
+    SetWordColor(14); // reset v? m?c d?nh
 }
 
 
 
 
-int main() {
-	//PrintMenu(); // while(1){ // // Coord d = MouseCoord(); // cout << d.first << ' ' << d.second ;}
-	ShowStudentMenu();
-//	gotoXY(55,12);
-//	string s;
-//	getline(cin ,s);
-    return 0;
-}
+int main() { // Th? d?t k√≠ch thu?c console c? d?nh
+    while (1) {
+        system("cls"); // X√≥a m√†n h√¨nh d? v? menu m?i
+        PrintMenu();
+        SetWordColor(14);
+        while (1) {
+            Coord click = MouseCoord();
+            // In t?a d? d? debug (c√≥ th? b? sau khi ki?m tra)
+            cout << "Mouse clicked at: " << click.FI << ", " << click.SE << "   ";
 
+            // Ki?m tra c√°c khung
+            if (click.SE >= 19 && click.SE <= 21 && click.FI >= 46 && click.FI <= 62) {
+                // ... x? l√Ω
+            }
+            // ... c√°c di?u ki?n kh√°c
+        }
+    }
+}
