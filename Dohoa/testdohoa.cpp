@@ -576,9 +576,9 @@ void ShowStudentMenu() {
 
 
 
-int main() { // Th? d?t kích thu?c console c? d?nh
+int main() { 
     while (1) {
-        system("cls"); // Xóa màn hình d? v? menu m?i
+        system("cls");
         PrintMenu();
         SetWordColor(14);
         while (1) {
@@ -586,11 +586,10 @@ int main() { // Th? d?t kích thu?c console c? d?nh
             // In t?a d? d? debug (có th? b? sau khi ki?m tra)
             cout << "Mouse clicked at: " << click.FI << ", " << click.SE << "   ";
 
-            // Ki?m tra các khung
             if (click.SE >= 19 && click.SE <= 21 && click.FI >= 46 && click.FI <= 62) {
-                // ... x? lý
+                
             }
-            // ... các di?u ki?n khác
         }
     }
 }
+
