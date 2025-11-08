@@ -2,6 +2,19 @@
 #include "SubjectRecord.h"
 #include "Tutor.h"
 #include "FileHandler.h"
+#include <limits>
+bool ChoiceInput(int &choice)
+{
+    cin >> choice;
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Vui long nhap so tu 1 den 5!" << endl;
+        return 0;
+    }
+    return 1;
+}
 void displayStudentMenu(Student *student, Admin &admin)
 {
     int choice;
@@ -19,9 +32,9 @@ void displayStudentMenu(Student *student, Admin &admin)
         cout << "8. Danh gia gia su" << endl;
         cout << "0. Dang xuat" << endl;
         cout << "Chon chuc nang: ";
-        cin >> choice;
-        cin.ignore();
-
+        if (!ChoiceInput(choice))
+            continue;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice)
         {
         case 1:
@@ -29,7 +42,6 @@ void displayStudentMenu(Student *student, Admin &admin)
             break;
         case 2:
             student->UpdateInfo();
-            FileHandler::SaveStudents();
             break;
         case 3:
             cout << "So du hien tai: " << student->GetBalance() << " VND" << endl;
@@ -42,7 +54,6 @@ void displayStudentMenu(Student *student, Admin &admin)
             student->Deposit(amount);
             cout << "Nap tien thanh cong! So du moi: " << student->GetBalance() << " VND" << endl;
             break;
-            FileHandler::SaveStudents();
         }
         case 5:
             student->Show_SubjectList();
@@ -86,7 +97,6 @@ void displayStudentMenu(Student *student, Admin &admin)
             cin.ignore();
 
             student->Rating(selectedTutor, rating);
-            FileHandler::SaveTutors();
             break;
         }
         case 0:
@@ -121,9 +131,9 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
         cout << "8. Xem danh gia" << endl;
         cout << "0. Dang xuat" << endl;
         cout << "Chon chuc nang: ";
-        cin >> choice;
-        cin.ignore();
-
+        if (!ChoiceInput(choice))
+            continue;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice)
         {
         case 1:
@@ -131,7 +141,6 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
             break;
         case 2:
             tutor->UpdateInfo();
-            FileHandler::SaveTutors();
             break;
         case 3:
             cout << "So du hien tai: " << tutor->GetBalance() << " VND" << endl;
@@ -153,11 +162,10 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
             cin.ignore();
 
             Subject *newSubject = new Subject(subjectName, cost);
-            tutor->AddSubject(newSubject);
-            SubjectRecord* t = tutor->getSubjectList()[tutor->getSubjectList().getSize() - 1];
+            SubjectRecord *t = new SubjectRecord(newSubject);
             admin.getSrList().push_back(t);
+            tutor->AddSubject(newSubject);
             cout << "Da them mon hoc: " << subjectName << " voi hoc phi: " << cost << endl;
-            FileHandler::SaveTutors();
             break;
         }
         case 7:
@@ -172,13 +180,11 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
             {
                 Subject *subject = tutor->getSubjectList()[subjectIndex - 1]->GetSubject();
                 subject->Update_SubjectInfo();
-                FileHandler::SaveSubjectRecords();
             }
             else
             {
                 cout << "So thu tu khong hop le!" << endl;
             }
-            FileHandler::SaveTutors();
             break;
         }
         case 8:
@@ -204,7 +210,7 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
 
 int main()
 {
-    Admin admin;
+   Admin admin;
     int mainChoice;
     cout << "CHUONG TRINH QUAN LY GIA SU - KHOI TAO THANH CONG!" << endl;
 
@@ -217,9 +223,9 @@ int main()
         cout << "4. Dang ky tai khoan moi" << endl;
         cout << "5. Thoat" << endl;
         cout << "Chon chuc nang: ";
-        cin >> mainChoice;
-        cin.ignore();
-
+        if (!ChoiceInput(mainChoice))
+            continue;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (mainChoice)
         {
         case 1:

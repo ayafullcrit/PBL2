@@ -10,7 +10,7 @@ class SubjectRecord
     public:
         SubjectRecord(Subject* subj = nullptr) : subject(subj) {};
         SubjectRecord(const SubjectRecord& other);
-        ~SubjectRecord() = default;
+        ~SubjectRecord();
 
         Subject* GetSubject() const { return subject; }
         MyVector<Student*>& GetStudentList() { return StudentList; }
@@ -19,5 +19,6 @@ class SubjectRecord
         Student* operator[](int index) { return StudentList[index]; }
         void AddStudent(Student* student);
         void ShowStudentList() const;
+        void ClearStudents();
         
 };

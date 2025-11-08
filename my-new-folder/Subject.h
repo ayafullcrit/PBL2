@@ -11,9 +11,8 @@ private:
     
 public:
     // con/destructor
-    Subject(const string &sbjname = "DefaultName", const int &cost = 200
-            ,const string &id = "SUBJ0000")
-        : SubjectName(sbjname), Cost(cost), sbjID(id) {};
+    Subject(const string &, const int & = 0, const string& = "SUBJ000");
+        
     Subject(const Subject &) = default;
     ~Subject() {};
     // Setter
@@ -22,6 +21,8 @@ public:
     int GetCost() { return this->Cost; }
     string GetID() { return this->sbjID; };
     void SetID(const string& id){ this->sbjID = id; };
+    void SetName(const string name) {this->SubjectName = name;};
+    void SetCost(const int cost){this->Cost = cost;};
     //
     void Update_SubjectInfo();
 };

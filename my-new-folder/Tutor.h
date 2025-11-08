@@ -23,12 +23,12 @@ public:
     void DisplayInfo() const override;
     //
     double GetRating() const { return Rating; }
-    void SetRating(const double &rating)
+    void SetRating(const double rating)
     {
         Rating = rating;
     }
     int GetNumOfRatings() const { return NumOfRatings; }
-    void SetNumOfRatings(const int &numofratings)
+    void SetNumOfRatings(const int numofratings)
     {
         NumOfRatings = numofratings;
     };

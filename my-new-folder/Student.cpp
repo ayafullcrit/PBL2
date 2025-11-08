@@ -1,6 +1,7 @@
 #include "Student.h"
 #include "Tutor.h"
 #include "Subject.h"
+#include "FileHandler.h"
 Student::Student(const string &id, const string &name, const string &location, const string &pass,
                  const int &balance, const double &grade, const int &sbjlist, const int &ttlist)
     : User(id, name, location, pass, balance), GradeLevel(grade), SubjectList(sbjlist),
@@ -36,26 +37,28 @@ Student::~Student()
     }
 
     // Giải phóng từng Tutor* trong danh sách
-    for (int i = 0; i < TutorList.getSize(); ++i)
-    {
-        Tutor *t = TutorList[i];
-        delete t;
-    }
+    // for (int i = 0; i < TutorList.getSize(); ++i)
+    // {
+    //     Tutor *t = TutorList[i];
+    //     delete t;
+    // }
 }
 void Student::DisplayInfo() const
 {
     this->User::DisplayInfo();
     cout << "Lop: " << GradeLevel << endl;
 }
-void Student::AddSubject(Subject* NewSubject)
+void Student::AddSubject(Subject *NewSubject)
 {
     cout << "Da them mon " << NewSubject->GetName() << " thanh cong!\n";
     this->SubjectList.push_back(NewSubject);
+  //  FileHandler::SaveStudents();
 }
-void Student::AddTutor(Tutor* NewTutor)
+void Student::AddTutor(Tutor *NewTutor)
 {
     cout << "Da them giao vien " << NewTutor->GetName() << endl;
     this->TutorList.push_back(NewTutor);
+   // FileHandler::SaveStudents();
 }
 void Student::Show_SubjectList()
 {
@@ -70,7 +73,7 @@ void Student::Show_TutorList()
     cout << "Danh sach cac giao vien dang theo hoc:\n";
     for (int i = 0; i < this->TutorList.getSize(); i++)
     {
-        cout << TutorList[i]->GetName() << endl;
+        cout << i + 1 << "." << TutorList[i]->GetName() << endl;
     }
 }
 void Student::PayCost(Subject &sbj)
@@ -124,25 +127,27 @@ Student &Student::operator=(const Student &other)
 
     return *this;
 }
-void Student::Rating(Tutor* tutor, const double &rating)
+void Student::Rating(Tutor *tutor, const double rating)
 {
-    if (rating < 0 || rating > 5) {
+    if (rating < 0 || rating > 5)
+    {
         cout << "Diem danh gia phai tu 0 den 5!" << endl;
         return;
     }
-    
+
     // Tính điểm trung bình mới
     double currentTotal = tutor->GetRating() * tutor->GetNumOfRatings();
     double newTotal = currentTotal + rating;
     int newNumRatings = tutor->GetNumOfRatings() + 1;
     double newRating = newTotal / newNumRatings;
-    
+
     // Cập nhật đánh giá
     tutor->SetRating(newRating);
     tutor->SetNumOfRatings(newNumRatings);
-    
+
     cout << "Da danh gia gia su " << tutor->GetName() << " voi diem so: "
          << rating << "/5" << endl;
     cout << "Diem trung binh hien tai: " << newRating << "/5" << endl;
     cout << "Tong so luot danh gia: " << newNumRatings << endl;
+    FileHandler::SaveTutors();
 }

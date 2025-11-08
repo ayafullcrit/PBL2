@@ -23,6 +23,7 @@ public:
     string GetRole() const override { return "Hoc sinh"; };
     void DisplayInfo() const override;
     //
+    MyVector<Subject *> &GetSubjectList() { return this->SubjectList; };
     MyVector<Tutor *> &GetTutorList() { return TutorList; };
     int GetGradeLevel() const { return GradeLevel; }
     void SetGradeLevel(const int &gradelevel) { GradeLevel = gradelevel; }
@@ -33,5 +34,5 @@ public:
     void Show_SubjectList();
     void Show_TutorList();
     void PayCost(Subject &);
-    void Rating(Tutor* , const double &);
+    void Rating(Tutor *, const double);
 };

@@ -5,6 +5,7 @@
 #include "FileHandler.h"
 #include <fstream>
 #include <sstream>
+#include <limits>
 string TutorDB = "Tutor.txt";
 string StudentDB = "Student.txt";
 string SubjectRecordDB = "SubjectRecord.txt";
@@ -13,6 +14,24 @@ MyVector<Student *> Admin::StudentList;
 MyVector<User *> Admin::UserList;
 MyVector<SubjectRecord *> Admin::srList;
 bool Admin::DataLoaded = 0;
+bool IntInput(int &a)
+{
+    cin >> a;
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Vui long nhap so hop le!" << endl;
+        return 0;
+    }
+    if (a < 0)
+    {
+        cout << "Vui long nhap so hop le!" << endl;
+        return 0;
+    }
+
+    return 1;
+}
 void normalize_string(string &t)
 {
     stringstream ss(t);
@@ -83,9 +102,9 @@ bool ValidateRegisData(RegisData &data)
     }
     return 1;
 }
-template <typename T>
-string GenID(MyVector<T> vec)
+string Admin::GenID()
 {
+    MyVector<SubjectRecord *> vec = srList;
     srand(time(NULL));
     string id = "";
     bool IsExist = false;
@@ -138,25 +157,25 @@ void Admin::RegisterNewUser()
     if (data.Role == "Student")
     {
         cout << "Nhap cap hoc (1-12): ";
-        cin >> data.GradeLevel;
-        cin.ignore();
+        if (!IntInput(data.GradeLevel))
+            return;
     }
     else if (data.Role == "Tutor")
     {
         cout << "Nhap so mon hoc day: ";
-        cin >> data.subjectCount;
+        IntInput(data.subjectCount);
         cin.ignore();
         for (int i = 0; i < data.subjectCount; ++i)
         {
             string subject;
-            string ID = GenID(Admin::srList);
+            string ID = GenID();
             int cost;
             cout << "-Nhap ten mon hoc thu " << (i + 1) << ": ";
             getline(cin, subject);
             normalize_string(subject);
             cout << "-Nhap hoc phi cho mon " << subject << " : ";
-            cin >> cost;
-            data.Subjects.push_back(new Subject(subject, cost, ID));
+            IntInput(cost);
+            data.Subjects.push_back(new Subject(subject, cost));
             cin.ignore();
         }
     }
@@ -176,10 +195,11 @@ void Admin::RegisterNewUser()
         //  temptt = newTutor;
         for (int i = 0; i < data.Subjects.getSize(); ++i)
         {
+            //  cout << data.Subjects[i]->GetName() << endl;
             newTutor->AddSubject(data.Subjects[i]);
-            SubjectRecord* sr = new SubjectRecord(data.Subjects[i]);
+            SubjectRecord *sr = new SubjectRecord(data.Subjects[i]);
             this->srList.push_back(sr);
-            FileHandler::AppendSubjectRecordToFile(sr);
+            // FileHandler::AppendSubjectRecordToFile(sr);
         }
         TutorList.push_back(newTutor);
         UserList.push_back(static_cast<User *>(newTutor));
@@ -225,9 +245,10 @@ Tutor *Admin::GetTutorByID(const string &id)
 void Admin::LoadData()
 {
     FileHandler::LoadTutors(TutorList, UserList);
-    FileHandler::LoadStudents(StudentList, UserList);
-    MyVector<SubjectRecord*> subjectRecords; // Temporary, not stored
+    FileHandler::LoadStudents(StudentList, UserList, TutorList);
+    MyVector<SubjectRecord *> subjectRecords; // Temporary, not stored
     FileHandler::LoadSubjectRecords(subjectRecords, TutorList, StudentList);
+   // cout << "??";
 }
 void Admin::SaveAllData()
 {
@@ -236,7 +257,7 @@ void Admin::SaveAllData()
 Tutor *Admin::LoginTutor(const string &id, const string &password)
 {
     Tutor *tutor = GetTutorByID(id);
-    //cout << tutor->GetPassword() << ' ' << password << endl;
+    // cout << tutor->GetPassword() << ' ' << password << endl;
     if (tutor != nullptr)
     {
         if (tutor->Authenticate(password))
@@ -251,7 +272,7 @@ Tutor *Admin::LoginTutor(const string &id, const string &password)
             return nullptr;
         }
     }
-   // cout << "Khong tim thay gia su voi ID nay!" << endl;
+    cout << "Khong tim thay gia su voi ID nay!" << endl;
     return nullptr;
 }
 Student *Admin::LoginStudent(const string &id, const string &password)
@@ -330,26 +351,25 @@ MyVector<Tutor *> Admin::TutorsFilter(const string &name, const string &subject,
     }
     return results;
 }
-void Admin::DisplayAllTutors()
+void Admin::DisplayTutors(MyVector<Tutor *> tt)
 {
     cout << "\n===== DANH SACH TAT CA GIA SU =====" << endl;
-    if (TutorList.getSize() == 0)
+    if (tt.getSize() == 0)
     {
         cout << "Hien tai chua co gia su nao trong he thong!" << endl;
         return;
     }
 
-    for (int i = 0; i < TutorList.getSize(); ++i)
+    for (int i = 0; i < tt.getSize(); ++i)
     {
-        Tutor *tutor = TutorList[i];
+        Tutor *tutor = tt[i];
+        if (tutor == NULL)
+            return;
         cout << "\n--- Gia su " << i + 1 << " ---" << endl;
-        cout << "ID: " << tutor->GetID() << endl;
         cout << "Ten: " << tutor->GetName() << endl;
         cout << "Dia chi: " << tutor->GetLocation() << endl;
         cout << "Danh gia: " << tutor->GetRating() << "/5" << endl;
         cout << "So luot danh gia: " << tutor->GetNumOfRatings() << endl;
-        cout << "So du: " << tutor->GetBalance() << " VND" << endl;
-
         // Hiển thị các môn học của gia sư
         cout << "Cac mon hoc:" << endl;
         MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
@@ -379,9 +399,11 @@ void Admin::FindTutor(Student *student)
         cout << "4. Tim kiem theo dia chi" << endl;
         cout << "5. Quay lai" << endl;
         cout << "Chon chuc nang: ";
-        cin >> choice;
-        cin.ignore();
-
+        if (!IntInput(choice))
+        {
+            cout << "Lua chon khong hop le! Vui long nhap lai.\n";
+            continue;
+        }
         MyVector<Tutor *> searchResults;
 
         switch (choice)
@@ -389,7 +411,7 @@ void Admin::FindTutor(Student *student)
         case 1:
         {
             // Hiển thị tất cả gia sư
-            DisplayAllTutors();
+            DisplayTutors(TutorList);
             searchResults = TutorList;
             break;
         }
@@ -397,6 +419,7 @@ void Admin::FindTutor(Student *student)
         {
             cout << "Nhap ten gia su can tim: ";
             string name;
+            cin.ignore();
             getline(cin, name);
 
             for (int i = 0; i < TutorList.getSize(); ++i)
@@ -414,20 +437,14 @@ void Admin::FindTutor(Student *student)
             }
 
             cout << "\n=== KET QUA TIM KIEM ===" << endl;
-            for (int i = 0; i < searchResults.getSize(); ++i)
-            {
-                cout << "\n--- Gia su " << i + 1 << " ---" << endl;
-                cout << "ID: " << searchResults[i]->GetID() << endl;
-                cout << "Ten: " << searchResults[i]->GetName() << endl;
-                cout << "Dia chi: " << searchResults[i]->GetLocation() << endl;
-                cout << "Danh gia: " << searchResults[i]->GetRating() << "/5" << endl;
-            }
+            DisplayTutors(searchResults);
             break;
         }
         case 3:
         {
             cout << "Nhap ten mon hoc can tim: ";
             string subject;
+            cin.ignore();
             getline(cin, subject);
 
             for (int i = 0; i < TutorList.getSize(); ++i)
@@ -480,6 +497,7 @@ void Admin::FindTutor(Student *student)
         {
             cout << "Nhap dia chi can tim: ";
             string location;
+            cin.ignore();
             getline(cin, location);
 
             for (int i = 0; i < TutorList.getSize(); ++i)
@@ -497,14 +515,7 @@ void Admin::FindTutor(Student *student)
             }
 
             cout << "\n=== KET QUA TIM KIEM ===" << endl;
-            for (int i = 0; i < searchResults.getSize(); ++i)
-            {
-                cout << "\n--- Gia su " << i + 1 << " ---" << endl;
-                cout << "ID: " << searchResults[i]->GetID() << endl;
-                cout << "Ten: " << searchResults[i]->GetName() << endl;
-                cout << "Dia chi: " << searchResults[i]->GetLocation() << endl;
-                cout << "Danh gia: " << searchResults[i]->GetRating() << "/5" << endl;
-            }
+            DisplayTutors(searchResults);
             break;
         }
         case 5:
@@ -517,50 +528,77 @@ void Admin::FindTutor(Student *student)
         if (searchResults.getSize() > 0 && choice != 5)
         {
             cout << "\nBan co muon them gia su vao danh sach cua minh? (y/n): ";
-            char addChoice;
-            cin >> addChoice;
-            cin.ignore();
-
-            if (addChoice == 'y' || addChoice == 'Y')
-            {
-                cout << "Chon gia su theo so thu tu (1-" << searchResults.getSize() << "): ";
-                int tutorChoice;
-                cin >> tutorChoice;
+            string addChoice;
+            if (choice == 1)
                 cin.ignore();
+            cin >> addChoice;
 
-                if (tutorChoice >= 1 && tutorChoice <= searchResults.getSize())
+            if (addChoice != "y" && addChoice != "Y" && addChoice != "n" && addChoice != "N")
+            {
+                cout << "Lua chon khong hop le";
+                continue;
+            }
+            if (addChoice != "y" && addChoice != "Y")
+                continue;
+            cout << "Chon gia su theo so thu tu (1-" << searchResults.getSize() << "): ";
+            int tutorChoice;
+            if (!IntInput(tutorChoice))
+                continue;
+
+            // cin.ignore();
+            if (tutorChoice < 1 || tutorChoice > searchResults.getSize())
+            {
+                cout << "Lua chon khong hop le!" << endl;
+                continue;
+            }
+            Tutor *selectedTutor = searchResults[tutorChoice - 1];
+            MyVector<SubjectRecord *> &subjectList = selectedTutor->getSubjectList();
+            // show subject list
+            for (int j = 0; j < subjectList.getSize(); ++j)
+            {
+                Subject *subject = subjectList[j]->GetSubject();
+                cout << j + 1 << "." << subject->GetName() << " (Hoc phi: " << subject->GetCost() << " VND)" << endl;
+            }
+            cout << "Chon mon hoc muon them: ";
+            int subjectchoice;
+            if (!IntInput(subjectchoice))
+                continue;
+            if (subjectchoice < 1 || subjectchoice > subjectList.getSize())
+                continue;
+            // check exist
+            SubjectRecord *selectedSubject = subjectList[subjectchoice - 1];
+            bool ExistTutor = false, ExistSubject = false;
+            MyVector<Tutor *> &studentTutors = student->GetTutorList();
+            MyVector<Subject *> &studentSubject = student->GetSubjectList();
+            for (int i = 0; i < studentTutors.getSize(); ++i)
+            {
+                if (studentTutors[i]->GetID() == selectedTutor->GetID())
                 {
-                    Tutor *selectedTutor = searchResults[tutorChoice - 1];
-
-                    // Kiểm tra xem học sinh đã có gia sư này chưa
-                    bool alreadyExists = false;
-                    MyVector<Tutor *> &studentTutors = student->GetTutorList();
-                    for (int i = 0; i < studentTutors.getSize(); ++i)
-                    {
-                        if (studentTutors[i]->GetID() == selectedTutor->GetID())
-                        {
-                            alreadyExists = true;
-                            break;
-                        }
-                    }
-
-                    if (!alreadyExists)
-                    {
-                        student->AddTutor(selectedTutor);
-                        this->TutorList.push_back(selectedTutor);
-                        cout << "Da them gia su " << selectedTutor->GetName() << " vao danh sach!" << endl;
-                        FileHandler::SaveStudents();
-                    }
-                    else
-                    {
-                        cout << "Ban da co gia su nay trong danh sach!" << endl;
-                    }
-                }
-                else
-                {
-                    cout << "Lua chon khong hop le!" << endl;
+                    ExistTutor = true;
+                    break;
                 }
             }
+            if (ExistTutor)
+            {
+                for (int i = 0; i < studentSubject.getSize(); i++)
+                {
+                    if (selectedSubject->GetID() == studentSubject[i]->GetID())
+                    {
+                        ExistSubject = true;
+                        break;
+                    }
+                }
+            }
+            if (ExistSubject)
+            {
+                cout << "Da co mon " << selectedSubject->GetSubject()->GetName() << " cua giao vien"
+                     << selectedTutor->GetName() << "!" << endl;
+                continue;
+            }
+            selectedTutor->addStudentToSubject(student, subjectList[subjectchoice - 1]->GetSubject());
+            FileHandler::SaveAllData(TutorList, StudentList);
+            cout << "Da them gia su " << selectedTutor->GetName() << " vao danh sach!" << endl;
+            cout << "------------------------" << endl;
         }
 
         if (choice != 5)
@@ -572,5 +610,4 @@ void Admin::FindTutor(Student *student)
 }
 Admin::~Admin()
 {
-    //SaveAllData();
 }

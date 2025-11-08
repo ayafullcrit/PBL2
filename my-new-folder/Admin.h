@@ -56,6 +56,7 @@ public:
     {
         return StudentList[StudentList.getSize() - 1];
     }
+    string GenID();
     SubjectRecord *GetsrByID(const string &);
     Student *GetstdByID(const string &id);
     Tutor *GetTutorByID(const string &id);
@@ -65,7 +66,7 @@ public:
     Tutor *LoginTutor(const string &id, const string &password);
     Student *LoginStudent(const string &id, const string &password);
     User *LoginUser(const string &id, const string &password);
-    void DisplayAllTutors();
+    void DisplayTutors(MyVector<Tutor*> );
     void FindTutor(Student* student);
     MyVector<Tutor *> TutorsFilter(const string &name = "", const string &subject = "",
                                    const string &location = "", double minRating = 0);

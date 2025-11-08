@@ -56,7 +56,7 @@ public:
             reallocate(capacity * 2); // tự mở rộng khi đầy
         data[size++] = value;
     }
-    
+
     void removeAt(int index)
     {
         if (index < 0 || index >= size)
@@ -72,6 +72,14 @@ public:
         // Giảm size và dọn con trỏ cuối
         --size;
     }
+    void pop_back()
+    {
+        if (size == 0)
+        {
+            throw out_of_range("Vector is empty");
+        }
+        removeAt(size - 1);
+    }
     // Truy cập phần tử qua chỉ số
     T &operator[](int index)
     {
@@ -86,7 +94,23 @@ public:
             throw out_of_range("Index out of range");
         return data[index];
     }
+    MyVector<T> &operator=(const MyVector<T> &other)
+    {
+        if (this == &other) // kiểm tra tự gán
+            return *this;
 
+        // Giải phóng bộ nhớ cũ
+        delete[] data;
+
+        // Sao chép dữ liệu từ other
+        size = other.size;
+        capacity = other.capacity;
+        data = new T[capacity];
+        for (int i = 0; i < size; ++i)
+            data[i] = other.data[i];
+
+        return *this;
+    }
     int getSize() const { return size; }
 
     void printAll() const

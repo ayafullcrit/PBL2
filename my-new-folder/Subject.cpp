@@ -1,6 +1,16 @@
 #include "Subject.h"
+#include "FileHandler.h"
+#include "Admin.h"
 #include <iostream>
 using namespace std;
+Subject::Subject(const string &sbjname = "DefaultName", const int &cost, const string &ID)
+    : SubjectName(sbjname), Cost(cost), sbjID(ID)
+{
+    if (sbjID != "SUBJ000")
+        return;
+    Admin t;
+    this->sbjID = t.GenID();
+}
 void Subject::Update_SubjectInfo()
 {
     char c = 'y';
@@ -26,4 +36,6 @@ void Subject::Update_SubjectInfo()
         this->Cost = temp_int;
         cout << "Hoc phi moi cua mon " << this->SubjectName << " la " << temp_int;
     }
+    FileHandler::SaveTutors();
+    FileHandler::SaveSubjectRecords();
 }

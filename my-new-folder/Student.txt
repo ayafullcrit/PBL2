@@ -1,37 +1,20 @@
-831544
-Npc
-npc
+hocsinhmoi
+niko niko
+provip123
 Hue
-0
+2100
 10
-0
-0
-_______
-871058
-Dac Tri
-123456
-Da Nang
-0
-10
-0
-0
-_______
-giasuprovip
-New User
-new pass
-Da Nang
-0
-10
-0
-0
-_______
-1022345
-Tran La Luot
-454545
-Thanh Hoa
-50000
-12
 1
-giaden
+npc
+1
+690473
+_______
+npc4
+Hoc Sinh Cu
+npc4
+Ha Noi
+0
+11
+0
 0
 _______

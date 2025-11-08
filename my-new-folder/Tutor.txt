@@ -1,58 +1,23 @@
-178568
-Dang Phong
-pphh
-Da Nang
-0
-0
-1
-196730
-_______
-238838
-Dang Phong
-ddpp
-Da Nang
-0
-0
-2
-424382
-114296
-_______
-055218
-Dac Tri
-ddtt
+npc
+Gsm
+npc
 Hue
 0
-5
-2
-990733
-SUBJ0000
+4
+3
+690473
+270386
+664823
 _______
-giasumoi
-Dang Phong
-abc
+npc2
+Gia Su 2
+npc2
 Da Nang
 0
 0
-1
-721245
-_______
-giaden
-Gia Van Den
-nigga
-Chau Phi
-0
-5
-2
-454327
-021772
-_______
-giaden
-Gia Van Den
-nigga
-Chau Phi
-0
-5
-2
-454327
-021772
+4
+747054
+330978
+624417
+304320
 _______

@@ -2,7 +2,7 @@
 #include "Student.h"
 #include "Subject.h"
 #include "SubjectRecord.h"
-#include "Pointer.h"
+#include "FileHandler.h"
 Tutor::Tutor(const string &id, const string &name, const string &location, const string &pass,
              const int &balance, const int &sbjlist, const double &rating)
     : User(id, name, location, pass, balance), SubjectList(sbjlist), Rating(rating)
@@ -44,11 +44,13 @@ void Tutor::AddSubject(Subject* NewSubject)
     //  cout << "Da them mon " << NewSubject.GetName() << "!" << endl;
     SubjectRecord* newSubjRec = new SubjectRecord(NewSubject);
     this->SubjectList.push_back(newSubjRec);
+    FileHandler::SaveSubjectRecords();
+    FileHandler::SaveTutors();
 }
 void Tutor::AddSubject(const string &subjectName)
 {
-    Subject subject(subjectName);
-    AddSubject(&subject);
+    Subject* subject = new Subject(subjectName);
+    AddSubject(subject);
 }
 void Tutor::addStudentToSubject(Student* NewStudent, Subject* s)
 {
@@ -57,9 +59,13 @@ void Tutor::addStudentToSubject(Student* NewStudent, Subject* s)
         if (this->SubjectList[i]->GetSubject()->GetName() == s->GetName())
         {
             this->SubjectList[i]->AddStudent(NewStudent);
+            NewStudent->AddTutor(this);
+            NewStudent->AddSubject(this->SubjectList[i]->GetSubject());
             return;
         }
     }
+    // FileHandler::SaveStudents();
+    // FileHandler::SaveTutors();
     // cout << "Da them hoc sinh " << NewStudent.GetName() << endl;
 }
 void Tutor::Show_StudentList()

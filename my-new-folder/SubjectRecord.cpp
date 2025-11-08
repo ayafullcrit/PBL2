@@ -21,3 +21,13 @@ void SubjectRecord::AddStudent(Student* student)
 {
     StudentList.push_back(student);
 }
+void SubjectRecord::ClearStudents()
+{
+    while(StudentList.getSize() > 0) {
+        StudentList.pop_back();
+    }
+}
+SubjectRecord::~SubjectRecord()
+{
+    delete subject;
+}

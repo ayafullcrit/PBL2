@@ -12,7 +12,11 @@ bool FileHandler::LoadTutors(MyVector<Tutor *> &tutors, MyVector<User *> &users)
         cout << "Khong the mo file " << TUTOR_FILE << endl;
         return false;
     }
-
+    if (file.peek() == ifstream::traits_type::eof())
+    {
+        cout << "File " << TUTOR_FILE << " rong." << endl;
+        return false;
+    }
     string line;
     while (getline(file, line))
     {
@@ -27,7 +31,6 @@ bool FileHandler::LoadTutors(MyVector<Tutor *> &tutors, MyVector<User *> &users)
         getline(file, name);
         getline(file, password);
         getline(file, location);
-
         getline(file, line);
         balance = stoi(line);
 
@@ -57,11 +60,11 @@ bool FileHandler::LoadTutors(MyVector<Tutor *> &tutors, MyVector<User *> &users)
     }
 
     file.close();
-    cout << "Da tai " << tutors.getSize() << " gia su tu file." << endl;
+    // cout << "Da tai " << tutors.getSize() << " gia su tu file." << endl;
     return true;
 }
 
-bool FileHandler::LoadStudents(MyVector<Student *> &students, MyVector<User *> &users)
+bool FileHandler::LoadStudents(MyVector<Student *> &students, MyVector<User *> &users, MyVector<Tutor *> tutors)
 {
     ifstream file(STUDENT_FILE);
     if (!file.is_open())
@@ -69,7 +72,12 @@ bool FileHandler::LoadStudents(MyVector<Student *> &students, MyVector<User *> &
         cout << "Khong the mo file " << STUDENT_FILE << endl;
         return false;
     }
-
+    if (file.peek() == ifstream::traits_type::eof())
+    {
+        cout << "File " << TUTOR_FILE << " rong." << endl;
+        return false;
+    }
+    // Admin a;
     string line;
     while (getline(file, line))
     {
@@ -92,15 +100,24 @@ bool FileHandler::LoadStudents(MyVector<Student *> &students, MyVector<User *> &
 
         getline(file, line);
         tutorCount = stoi(line);
-
         // Create Student object
         Student *student = new Student(id, name, location, password, balance, gradeLevel);
-
+        // cout << tutorCount << endl;
         // Load Tutor IDs
         for (int i = 0; i < tutorCount; ++i)
         {
             getline(file, line);
             // Store for later linking
+            string tutorId = line;
+            // find tutor in provided tutors list and link
+            for (int t = 0; t < tutors.getSize(); ++t)
+            {
+                if (tutors[t]->GetID() == tutorId)
+                {
+                    student->GetTutorList().push_back(tutors[t]);
+                    break;
+                }
+            }
         }
 
         getline(file, line);
@@ -120,7 +137,7 @@ bool FileHandler::LoadStudents(MyVector<Student *> &students, MyVector<User *> &
     }
 
     file.close();
-    cout << "Da tai " << students.getSize() << " hoc sinh tu file." << endl;
+    // cout << "Da tai " << students.getSize() << " hoc sinh tu file." << endl;
     return true;
 }
 
@@ -149,28 +166,28 @@ bool FileHandler::LoadSubjectRecords(MyVector<SubjectRecord *> &subjectRecords,
 
         int cost = stoi(costStr);
         int studentCount = stoi(studentCountStr);
-
+        // cout << line << endl << subjectName << endl << cost << endl << studentCount << endl;
         // Update SubjectRecord in tutors
+        //cout << line << endl;
         for (int i = 0; i < tutors.getSize(); ++i)
         {
             Tutor *tutor = tutors[i];
             MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
-
             for (int j = 0; j < subjectList.getSize(); ++j)
             {
                 if (subjectList[j]->GetID() == subjectID)
                 {
-                    // Update subject information
-                    delete subjectList[j]->GetSubject();
-                    Subject *subject = new Subject(subjectName, cost, subjectID);
-                    delete subjectList[j];
-                    subjectList[j] = new SubjectRecord(subject);
 
-                    // Load students for this subject
+                    Subject *subject = subjectList[j]->GetSubject();
+                    subject->SetName(subjectName);
+                    subject->SetCost(cost);
+                    subject->SetID(subjectID);
+
+                    subjectList[j]->ClearStudents(); // nếu có hàm xóa danh sách cũ
+
                     for (int k = 0; k < studentCount; ++k)
                     {
                         getline(file, line);
-                        // Find student and add to subject record
                         for (int l = 0; l < students.getSize(); ++l)
                         {
                             if (students[l]->GetID() == line)
@@ -181,22 +198,21 @@ bool FileHandler::LoadSubjectRecords(MyVector<SubjectRecord *> &subjectRecords,
                             }
                         }
                     }
-                    break;
                 }
             }
         }
-
         getline(file, line); // Skip separator
     }
-
+   // cout << "Before closing file" << endl;
     file.close();
+   // cout << "After closing file" << endl;
     return true;
 }
 
 bool FileHandler::SaveTutors()
-{   
+{
     Admin d;
-    MyVector<Tutor* >& tutors = d.getTutorList();
+    MyVector<Tutor *> &tutors = d.getTutorList();
     ofstream file(TUTOR_FILE, ios::trunc);
     if (!file.is_open())
     {
@@ -226,7 +242,7 @@ bool FileHandler::SaveTutors()
     }
 
     file.close();
-    cout << "Da luu " << tutors.getSize() << " gia su vao file." << endl;
+    // cout << "Da luu " << tutors.getSize() << " gia su vao file." << endl;
     return true;
 }
 
@@ -259,12 +275,18 @@ bool FileHandler::SaveStudents()
             file << tutorList[j]->GetID() << endl;
         }
 
-        file << "0" << endl; // Subject count - currently not used
+        MyVector<Subject *> &subjectList = student->GetSubjectList();
+        file << subjectList.getSize() << endl;
+
+        for (int j = 0; j < subjectList.getSize(); ++j)
+        {
+            file << subjectList[j]->GetID() << endl;
+        }
         file << "_______" << endl;
     }
 
     file.close();
-    cout << "Da luu " << students.getSize() << " hoc sinh vao file." << endl;
+    // cout << "Da luu " << students.getSize() << " hoc sinh vao file." << endl;
     return true;
 }
 
@@ -307,7 +329,7 @@ bool FileHandler::SaveSubjectRecords()
     }
 
     file.close();
-    cout << "Da luu " << totalRecords << " mon hoc vao file." << endl;
+    // cout << "Da luu " << totalRecords << " mon hoc vao file." << endl;
     return true;
 }
 
@@ -341,6 +363,7 @@ bool FileHandler::AppendTutorToFile(Tutor *tutor)
     for (int j = 0; j < subjectList.getSize(); ++j)
     {
         file << subjectList[j]->GetID() << endl;
+        FileHandler::AppendSubjectRecordToFile(subjectList[j]);
     }
 
     file << "_______" << endl;
@@ -364,7 +387,7 @@ bool FileHandler::AppendStudentToFile(Student *student)
     file << student->GetBalance() << endl;
     file << student->GetGradeLevel() << endl;
     file << "0" << endl; // Tutor count
-    file << "0" << endl; // Subject count
+    file << "0" << endl;
     file << "_______" << endl;
 
     file.close();
