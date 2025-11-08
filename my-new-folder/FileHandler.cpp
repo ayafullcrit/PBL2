@@ -108,16 +108,16 @@ bool FileHandler::LoadStudents(MyVector<Student *> &students, MyVector<User *> &
         {
             getline(file, line);
             // Store for later linking
-            string tutorId = line;
-            // find tutor in provided tutors list and link
-            for (int t = 0; t < tutors.getSize(); ++t)
-            {
-                if (tutors[t]->GetID() == tutorId)
-                {
-                    student->GetTutorList().push_back(tutors[t]);
-                    break;
-                }
-            }
+            // string tutorId = line;
+            // // find tutor in provided tutors list and link
+            // for (int t = 0; t < tutors.getSize(); ++t)
+            // {
+            //     if (tutors[t]->GetID() == tutorId)
+            //     {
+            //         student->GetTutorList().push_back(tutors[t]);
+            //         break;
+            //     }
+            // }
         }
 
         getline(file, line);
