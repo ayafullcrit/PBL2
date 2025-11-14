@@ -210,7 +210,7 @@ void displayTutorMenu(Tutor *tutor, Admin &admin)
 
 int main()
 {
-   Admin admin;
+    Admin admin;
     int mainChoice;
     cout << "CHUONG TRINH QUAN LY GIA SU - KHOI TAO THANH CONG!" << endl;
 

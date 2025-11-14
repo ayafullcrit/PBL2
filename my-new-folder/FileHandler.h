@@ -18,10 +18,9 @@ private:
 
 public:
     // Load methods
-    static bool LoadTutors(MyVector<Tutor*>& tutors, MyVector<User*>& users);
-    static bool LoadStudents(MyVector<Student*>& students, MyVector<User*>& users, MyVector<Tutor*>);
-    static bool LoadSubjectRecords(MyVector<SubjectRecord*>& subjectRecords, 
-                                  MyVector<Tutor*>& tutors, MyVector<Student*>& students);
+    static bool LoadTutors();
+    static bool LoadStudents();
+    static bool LoadSubjectRecords();
     
     // Save methods
     static bool SaveTutors();
@@ -29,7 +28,7 @@ public:
     static bool SaveSubjectRecords();
     
     // Utility methods
-    static bool SaveAllData(MyVector<Tutor*>& tutors, MyVector<Student*>& students);
+    static bool SaveAllData();
     static bool BackupData();
     static bool ValidateFile(const string& filename);
     

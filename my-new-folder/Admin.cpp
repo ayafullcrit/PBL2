@@ -128,12 +128,26 @@ string Admin::GenID()
     } while (IsExist);
     return id;
 }
-void Admin::RegisterNewUser()
+bool Admin::RegisterNewUser()
 {
     RegisData data;
     cout << "----- Dang ky tai khoan moi -----" << endl;
     cout << "Nhap ID tai khoan: ";
     cin >> data.ID;
+    // check
+    bool checkExist = 0;
+    for (int i = 0; i < UserList.getSize(); i++)
+    {
+        if (UserList[i]->GetID() == data.ID)
+        {
+            checkExist = 1;
+        }
+    }
+    if (checkExist)
+    {
+        cout << "ID nay da duoc dang ky, vui long nhap ID khac!";
+        return 0;
+    }
     cin.ignore();
     do
     {
@@ -158,7 +172,7 @@ void Admin::RegisterNewUser()
     {
         cout << "Nhap cap hoc (1-12): ";
         if (!IntInput(data.GradeLevel))
-            return;
+            return 0;
     }
     else if (data.Role == "Tutor")
     {
@@ -180,7 +194,7 @@ void Admin::RegisterNewUser()
         }
     }
     if (!ValidateRegisData(data))
-        return;
+        return 0;
     if (data.Role == "Student")
     {
         Student *newStudent = new Student(data.ID, data.Name, data.Location, data.Password, data.Balance, data.GradeLevel);
@@ -197,15 +211,17 @@ void Admin::RegisterNewUser()
         {
             //  cout << data.Subjects[i]->GetName() << endl;
             newTutor->AddSubject(data.Subjects[i]);
-            SubjectRecord *sr = new SubjectRecord(data.Subjects[i]);
-            this->srList.push_back(sr);
-            // FileHandler::AppendSubjectRecordToFile(sr);
+            SubjectRecord *sr = new SubjectRecord(data.Subjects[i], newTutor);
+            srList.push_back(sr);
+            FileHandler::AppendSubjectRecordToFile(sr);
         }
         TutorList.push_back(newTutor);
         UserList.push_back(static_cast<User *>(newTutor));
         FileHandler::AppendTutorToFile(newTutor);
     }
+    // FileHandler::SaveAllData();
     cout << "Dang ky tai khoan thanh cong!" << endl;
+    return 1;
 }
 Admin::Admin()
 {
@@ -244,15 +260,17 @@ Tutor *Admin::GetTutorByID(const string &id)
 }
 void Admin::LoadData()
 {
-    FileHandler::LoadTutors(TutorList, UserList);
-    FileHandler::LoadStudents(StudentList, UserList, TutorList);
-    MyVector<SubjectRecord *> subjectRecords; // Temporary, not stored
-    FileHandler::LoadSubjectRecords(subjectRecords, TutorList, StudentList);
-   // cout << "??";
+    DataLoaded = 1;
+    FileHandler::LoadTutors();
+    FileHandler::LoadStudents();
+    // cout << "Loaded!";
+    // MyVector<SubjectRecord *> subjectRecords; // Temporary, not stored
+    FileHandler::LoadSubjectRecords();
+    // cout << "??";
 }
 void Admin::SaveAllData()
 {
-    FileHandler::SaveAllData(TutorList, StudentList);
+    FileHandler::SaveAllData();
 }
 Tutor *Admin::LoginTutor(const string &id, const string &password)
 {
@@ -312,44 +330,12 @@ User *Admin::LoginUser(const string &id, const string &password)
     cout << "ID hoac mat khau khong dung!" << endl;
     return nullptr;
 }
-MyVector<Tutor *> Admin::TutorsFilter(const string &name, const string &subject,
-                                      const string &location, double minRating)
+void Admin::DisplaySubject()
 {
-    MyVector<Tutor *> results;
-    for (int i = 0; i < TutorList.getSize(); ++i)
+    for (int i = 0; i < srList.getSize(); i++)
     {
-        Tutor *tutor = TutorList[i];
-        bool matches = true;
-
-        // check name
-        if (!name.empty() && tutor->GetName().find(name) == string::npos)
-            matches = false;
-        // check location
-        if (matches && !location.empty() && tutor->GetLocation().find(location) == string::npos)
-            matches = false;
-        // check subject
-        if (matches && !subject.empty())
-        {
-            bool foundSubject = false;
-            MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
-            for (int j = 0; j < subjectList.getSize(); ++j)
-            {
-                if (subjectList[j]->GetSubject()->GetName().find(subject) != string::npos)
-                {
-                    foundSubject = true;
-                    break;
-                }
-            }
-            matches = foundSubject;
-        }
-
-        // check min rating
-        if (matches && minRating > 0 && tutor->GetRating() < minRating)
-            matches = false;
-        if (matches)
-            results.push_back(tutor);
+        cout << srList[i]->GetSubject()->GetName() << endl;
     }
-    return results;
 }
 void Admin::DisplayTutors(MyVector<Tutor *> tt)
 {
@@ -596,7 +582,7 @@ void Admin::FindTutor(Student *student)
                 continue;
             }
             selectedTutor->addStudentToSubject(student, subjectList[subjectchoice - 1]->GetSubject());
-            FileHandler::SaveAllData(TutorList, StudentList);
+            FileHandler::SaveAllData();
             cout << "Da them gia su " << selectedTutor->GetName() << " vao danh sach!" << endl;
             cout << "------------------------" << endl;
         }

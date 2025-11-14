@@ -15,7 +15,7 @@ public:
     // con/destructor
     Tutor(const string & = "000000", const string & = "DefaultName",
           const string & = "Viet Nam", const string & = "12345",
-          const int & = 0, const int & = 0, const double & = 0);
+          const int & = 0, const int & = 0, const double & = 0,const int& = 0);
     Tutor(const Tutor &);
     ~Tutor();
     // override funcion

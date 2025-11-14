@@ -1,23 +1,16 @@
-npc
-Gsm
-npc
+npc2
+Tri
+npc2
 Hue
 0
-4
-3
-690473
-270386
-664823
+0
+0
 _______
-npc2
-Gia Su 2
-npc2
-Da Nang
+npc3
+Nguyen Dang Phong
+npc3
+Hue
 0
-0
-4
-747054
-330978
-624417
-304320
+4.9
+2
 _______

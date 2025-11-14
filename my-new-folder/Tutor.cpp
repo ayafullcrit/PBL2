@@ -4,10 +4,10 @@
 #include "SubjectRecord.h"
 #include "FileHandler.h"
 Tutor::Tutor(const string &id, const string &name, const string &location, const string &pass,
-             const int &balance, const int &sbjlist, const double &rating)
-    : User(id, name, location, pass, balance), SubjectList(sbjlist), Rating(rating)
+             const int &balance, const int &sbjlist, const double &rating,const int& numrating)
+    : User(id, name, location, pass, balance), SubjectList(sbjlist), Rating(rating), 
+    NumOfRatings(numrating)
 {
-    this->NumOfRatings = 0;
     // cout << "Tutor constructor is called!" << endl;
 };
 Tutor::Tutor(const Tutor &other)
@@ -35,17 +35,17 @@ void Tutor::DisplayInfo() const
     this->User::DisplayInfo();
     cout << "Danh gia: ";
     if (this->NumOfRatings != 0)
-        cout << this->Rating / this->NumOfRatings << endl;
+        cout << this->Rating << endl;
     else
         cout << "Chua co danh gia" << endl;
 }
 void Tutor::AddSubject(Subject* NewSubject)
 {
     //  cout << "Da them mon " << NewSubject.GetName() << "!" << endl;
-    SubjectRecord* newSubjRec = new SubjectRecord(NewSubject);
+    SubjectRecord* newSubjRec = new SubjectRecord(NewSubject, this);
     this->SubjectList.push_back(newSubjRec);
-    FileHandler::SaveSubjectRecords();
-    FileHandler::SaveTutors();
+   // FileHandler::SaveSubjectRecords();
+   // FileHandler::SaveTutors();
 }
 void Tutor::AddSubject(const string &subjectName)
 {

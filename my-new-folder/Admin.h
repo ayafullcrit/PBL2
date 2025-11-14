@@ -42,6 +42,10 @@ public:
     {
         return StudentList;
     }
+    MyVector<User* > &getUserList()
+    {
+        return UserList;
+    }
     MyVector<SubjectRecord* >& getSrList(){
         return srList;
     }
@@ -62,12 +66,14 @@ public:
     Tutor *GetTutorByID(const string &id);
     void LoadData();
     void SaveAllData();
-    void RegisterNewUser();
+    bool RegisterNewUser();
     Tutor *LoginTutor(const string &id, const string &password);
     Student *LoginStudent(const string &id, const string &password);
     User *LoginUser(const string &id, const string &password);
     void DisplayTutors(MyVector<Tutor*> );
+    void DisplaySubject();
     void FindTutor(Student* student);
     MyVector<Tutor *> TutorsFilter(const string &name = "", const string &subject = "",
                                    const string &location = "", double minRating = 0);
+
 };

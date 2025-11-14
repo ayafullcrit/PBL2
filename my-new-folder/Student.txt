@@ -1,20 +1,14 @@
-hocsinhmoi
-niko niko
-provip123
-Hue
-2100
-10
-1
-npc
-1
-690473
-_______
 npc4
-Hoc Sinh Cu
-npc4
+Ndp
+npc3
 Ha Noi
 0
 11
+_______
+npc5
+Tri Do Dai
+npc5
+Ho Chi Minh
 0
-0
+10
 _______

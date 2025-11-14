@@ -50,13 +50,13 @@ void Student::DisplayInfo() const
 }
 void Student::AddSubject(Subject *NewSubject)
 {
-    cout << "Da them mon " << NewSubject->GetName() << " thanh cong!\n";
+ //   cout << "Da them mon " << NewSubject->GetName() << " thanh cong!\n";
     this->SubjectList.push_back(NewSubject);
   //  FileHandler::SaveStudents();
 }
 void Student::AddTutor(Tutor *NewTutor)
 {
-    cout << "Da them giao vien " << NewTutor->GetName() << endl;
+   // cout << "Da them giao vien " << NewTutor->GetName() << endl;
     this->TutorList.push_back(NewTutor);
    // FileHandler::SaveStudents();
 }
