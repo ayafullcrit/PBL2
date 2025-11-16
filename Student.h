@@ -1,30 +1,38 @@
-
 #pragma once
+#include "User.h"
+#include "MyVector.h"
+class Tutor;
+class Subject;
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include"User.hpp"
-
-#include"Subject.h"
-using namespace std;
-class Teacher; //khai bao truoc
-class Student : public User {
+class Student : public User
+{
 private:
-    vector<Teacher> TeacherList;
-    vector<Subject> SubjectList;
+    int GradeLevel;
+    MyVector<Subject *> SubjectList;
+    MyVector<Tutor *> TutorList;
+
 public:
-    Student(string accName = "", string pass = "", string uname = "", string id = "", string loc = "", int balance = 0);
-
-    void AddTeacher(const Teacher& t);
-    void Show_TeacherList() ;
-
-    void Find_BySubject(string& subjectName);
-    void Find_ByLocation( string& location) ;
-
-    void Pay_TeachingFee(Teacher t, int amount);
-    void FeedBack();
-	friend class Subject;
-	friend class Teacher;
+    // con/destructor
+    Student(const string & = "000000", const string & = "DefaultName",
+            const string & = "Viet Nam", const string & = "12345",
+            const int & = 0, const double & = 1, const int & = 0,
+            const int & = 0);
+    Student(const Student &);
+    ~Student();
+    // override funcion
+    string GetRole() const override { return "Hoc sinh"; };
+    void DisplayInfo() const override;
+    //
+    MyVector<Subject *> &GetSubjectList() { return this->SubjectList; };
+    MyVector<Tutor *> &GetTutorList() { return TutorList; };
+    int GetGradeLevel() const { return GradeLevel; }
+    void SetGradeLevel(const int &gradelevel) { GradeLevel = gradelevel; }
+    //  class's method
+    Student &operator=(const Student &);
+    void AddSubject(Subject *);
+    void AddTutor(Tutor *);
+    void Show_SubjectList();
+    void Show_TutorList();
+    void PayCost(Subject &);
+    void Rating(Tutor *, const double);
 };
-// code mỗi class 1 file

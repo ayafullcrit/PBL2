@@ -1,132 +1,89 @@
-#include <iostream>
-#include <fstream>
-#include <unordered_map>
+#include "User.h"
+#include "FileHandler.h"
 #include <limits>
-#include <algorithm>
-#include "User.hpp"
-using namespace std;
-
-User::User(const string &role, const string &accountName, const string &userName, const string &password,const string& location, const int &accountBalance)
-    : Role(role), AccountName(accountName), UserName(userName), Password(password), location(location), AccountBalance(accountBalance) {}
-
-User::User() : Role("User"), AccountName(""), UserName(""), Password(""), location(""), AccountBalance(0) {}
-
-void User::ShowInfo()
+User::User(const User &other)
 {
-    cout << "Ban la :" << this->Role << endl;
-    cout << "Ten tai khoan: " << this->AccountName << endl;
-    cout << "Ten nguoi dung: " << this->UserName << endl;
-    cout << "Mat khau: " << this->Password << endl;
-    cout << "Dia chi: " << this->location << endl;
-    cout << "So du tai khoan: " << this->AccountBalance << endl;
+    *this = other;
+    // cout << "User copy constructor is called!" << endl;
 }
-
-void User::Register()
+bool User::Authenticate(const string &InputPassword) const
 {
-    string tempstr;
-    unordered_map<string, bool> users;
-    fstream UserDB("User.txt");
-    if (UserDB.fail())
-    {
-        cerr << "Error opening User database file." << endl;
-        return;
-    }
-    //<Role> <AccountName> <UserName> <Password> <location> <AccountBalance>
-    while (!UserDB.eof())
-    {
-        UserDB >> tempstr;
-        users[tempstr] = true;
-        UserDB >> tempstr;
-        UserDB.ignore((numeric_limits<streamsize>::max)(), '\n'); // skip line
-    }
-    cout << "Dang ky" << endl;
-    cout << "Nhap ten tai khoan: ";
-    cin >> this->AccountName;
-    if (users[this->AccountName])
-    {
-        cout << "Tai khoan da ton tai. Vui long chon ten khac." << endl;
-        return;
-    }
-    cout << "Nhap mat khau: ";
-    cin >> this->Password;
-    string TempPassword;
-    cout << "Nhap lai mat khau: ";
-    cin >> TempPassword;
-    if (TempPassword != this->Password)
-    {
-        cout << "Mat khau khong khop. Vui long thu lai." << endl;
-        return;
-    }
-    // Xoa_man_hinh();
-    cout << "Ban la giao vien/hoc sinh? (G/H): ";
-    char choice;
-    cin >> choice;
-    if (choice == 'G' || choice == 'g')
-    {
-        this->Role = "GiaoVien";
-    }
-    else if (choice == 'H' || choice == 'h')
-    {
-        this->Role = "HocSinh";
-    }
+    return this->Password == InputPassword;
+}
+void User::Deposit(const int &t)
+{
+    this->SetBalance(this->UserBalance + t);
+    if (this->GetRole() == "Hoc sinh")
+        FileHandler::SaveStudents();
     else
-    {
-        cout << "Lua chon khong hop le. Mac dinh ban la hoc sinh." << endl;
-        this->Role = "Hoc sinh";
-    }
-    cout << "Nhap ten nguoi dung: ";
-    cin.ignore();
-    getline(cin, this->UserName);
-    cout << "Nhap dia chi: ";
-    getline(cin, this->location);
-    this->AccountBalance = 0;
-    UserDB.clear();            // clear EOF flag
-    UserDB.seekp(0, ios::end); // move to end of file for appending
-    UserDB << this->Role << " " << this->AccountName << " " << '\"' + this->UserName + '\"' << " " << this->Password << " " << this->location << " " << this->AccountBalance << endl;
-    cout << "Dang ky thanh cong!";
-    UserDB.close();
+        FileHandler::SaveTutors();
 }
-
-void User::Login()
+bool User::Withdraw(const int &t)
 {
-    string tempstr;
-    unordered_map<string, User> users; // AccountName -> (Password, User)
-    fstream UserDB("User.txt");
-    if (UserDB.fail())
+    if (this->UserBalance < t)
+        return 0;
+    this->UserBalance -= t;
+    return 1;
+    if (this->GetRole() == "Hoc sinh")
+        FileHandler::SaveStudents();
+    else
+        FileHandler::SaveTutors();
+}
+void User::DisplayInfo() const
+{
+    cout << "Vai tro: " << this->GetRole() << endl;
+    cout << "ID tai khoan: " << this->UserID << endl;
+    cout << "Ten nguoi dung: " << this->UserName << endl;
+    cout << "Dia chi: " << this->Location << endl;
+    cout << "So du tai khoan: " << this->UserBalance << endl;
+}
+void User::UpdateInfo()
+{
+    cout << "Cap nhat thong tin nguoi dung:" << endl;
+    cout << "Ten nguoi dung hien tai: " << this->UserName << endl;
+    cout << "Ban can cap nhat ten nguoi dung khong? (Y/N): ";
+    string choice;
+    cin >> choice;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (choice != "Y" && choice != "y" && choice != "N" && choice != "n")
     {
-        cerr << "Error opening User database file." << endl;
+        cout << "Lua chon khong hop le!";
         return;
     }
-    while (!UserDB.eof())
+    else if (choice != "N" && choice != "n")
     {
-        string Role, AccountName, UserName, Password, location;
-        int AccountBalance;
-        UserDB >> Role >> AccountName;
-        if(Role.empty()) break; // to avoid processing empty lines
-        UserDB.ignore();                 // ignore space before getline
-        getline(UserDB, UserName, '\"'); // read until first quote
-        getline(UserDB, UserName, '\"'); // read until second quote
-        UserDB >> Password >> location >> AccountBalance;
-        users[AccountName] = User(Role, AccountName, UserName, Password, location,AccountBalance);
-        UserDB.ignore((numeric_limits<streamsize>::max)(), '\n'); // skip line
+        cout << "Nhap ten nguoi dung moi: ";
+        getline(cin, this->UserName);
+        cout << "Ten cua ban da duoc doi thanh: " << this->UserName;
+        cout << endl;
     }
-    cout << "Dang nhap" << endl;
-    cout << "Nhap ten tai khoan: ";
-    cin >> AccountName;
-    if (users.find(AccountName) == users.end())
+    cout << "Cap nhat thong tin dia chi:" << endl;
+    cout << "Dia chi hien tai: " << this->Location << endl;
+    cout << "Ban can cap nhat dia chi moi hay khong? (Y/N): ";
+    cin >> choice;
+    cin.ignore();
+    if (choice != "Y" && choice != "y" && choice != "N" && choice != "n")
     {
-        cerr << "Tai khoan khong ton tai. Vui long dang ky." << endl;
+        cout << "Lua chon khong hop le!";
         return;
     }
-    cout << "Nhap mat khau: ";
-    cin >> Password;
-    if (users[this->AccountName].Password != Password)
-    {
-        cerr << "Mat khau khong dung. Vui long thu lai." << endl;
-        return;
-    }
-    *this = users[this->AccountName];
-    cout << "Dang nhap thanh cong, chao mung !" << endl;
-    ShowInfo();
-    UserDB.close();
+    if(choice != "Y" && choice != "y") return;
+    cout << "Nhap dia chi moi: ";
+    getline(cin, this->Location);
+    if (this->GetRole() == "Hoc sinh")
+        FileHandler::SaveStudents();
+    else
+        FileHandler::SaveTutors();
+}
+User &User::operator=(const User &other)
+{
+    if (this == &other)
+        return *this;
+    this->UserID = other.UserID;
+    this->UserName = other.UserName;
+    this->Password = other.Password;
+    this->Location = other.Location;
+    this->UserBalance = other.UserBalance;
+
+    return *this;
 }
