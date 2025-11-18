@@ -100,7 +100,7 @@ void rectangle(int x, int y, int width, int height)
         cout << UpBorder;
     }
 
-    // --- góc du?i ---
+    // --- góc duoi ---
     gotoXY(x, y + height - 1);
     cout << LeftBottom;
     for (int i = 0; i < width - 2; i++) cout << Border;
@@ -141,8 +141,8 @@ void LoginUser() {
 
     int x = 15;
     int y = 3;
-    int width = 55;     // Tang chi?u r?ng (g?c là 30)
-    int height_1 = 3;   // Chi?u cao khung tiêu d? (g?c là 5)
+    int width = 55;     // Tang chieu rong (goc là 30)
+    int height_1 = 3;   // chieu cao cua khung
     int height_2 = 15;  
 
     SetWordColor(14); // Màu vàng sáng
@@ -188,58 +188,53 @@ void LoginUser() {
 //menu dang nhap student
 void LoginStudent() {
     system("cls");
-
-    // T?a d? và kích thu?c
+    // toa do 
     int x = 20;
     int y = 5;
-    int width = 73;  // Can ch?nh l?i cho kh?p v?i 71 ký t? bên trong + 2 vi?n
+    int width = 73;  //Can chinh
     int height = 14;
 
-    // Mã ký t? b?n dã d?nh nghia
     char Border = 205;   // -
     char LeftTee = 204;  // ¦
     char RightTee = 185; // ¦
 
-    // 1. V? khung ngoài b?ng hàm c?a b?n
+
+    // ve khung 
     SetWordColor(14); // Màu xanh lá cho khung
     rectangle(x, y, width, height);
 
-    // 2. V? các du?ng chia ngang bên trong
-    // Ðu?ng chia 1 (sau tiêu d?)
+    // ve duong chia ben trong
     gotoXY(x, y + 4);
     cout << LeftTee; // ¦
     for (int i = 0; i < width - 2; i++) cout << Border; // -
     cout << RightTee; // ¦
 
-    // Ðu?ng chia 2 (tru?c ph?n hu?ng d?n)
+
     gotoXY(x, y + 11);
     cout << LeftTee; // ¦
     for (int i = 0; i < width - 2; i++) cout << Border; // -
     cout << RightTee; // ¦
 
-    // 3. Vi?t n?i dung
-    // Tiêu d?
-    SetWordColor(6); // Màu vàng nh?t
+
+    SetWordColor(6); 
     gotoXY(x + 27, y + 2); cout << "DANG NHAP - HOC VIEN";
 
-    // Hu?ng d?n
     SetWordColor(8); // Màu xám
     gotoXY(x + 50, y + 9); cout << "(An mat khau bang '*')";
     gotoXY(x + 22, y + 12); cout << "(Nhan ENTER de xac nhan)";
 
-    // 4. V? ô nh?p li?u (Input boxes)
     SetWordColor(8); // Màu xám cho ô
     int inputX = x + 22;
     int inputWidth = 35;
     gotoXY(inputX, y + 6); cout << "___________________________________";
     gotoXY(inputX, y + 8); cout << "___________________________________";
 
-    // 5. Nh?n thông tin
+    // 5.Nhap thông tin
     string id, password;
     
-    SetWordColor(6); // Màu tr?ng cho nhãn
+    SetWordColor(6); // Màu trang cho nhãn
     gotoXY(x + 4, y + 6); cout << "Nhap ID:";
-    SetWordColor(15); // Màu tr?ng sáng cho ch? nh?p
+    SetWordColor(15); 
     gotoXY(inputX, y + 6);
     getline(cin, id);
 
@@ -248,9 +243,9 @@ void LoginStudent() {
     SetWordColor(15);
     password = getPassword(inputX, y + 8, inputWidth);
 
-    // 6. X? lý sau khi dang nh?p
+    // 6. Xu lý sau khi dang nhap
     SetWordColor(6); // Màu xanh duong sáng
-    gotoXY(x, y + height + 1); // Di chuy?n xu?ng du?i khung
+    gotoXY(x, y + height + 1); // Di chuyen xuong duoi khung
     cout << "Dang kiem tra thong tin, vui long cho..." << endl;
     
     Sleep(1000); 
@@ -266,9 +261,9 @@ void LoginStudent() {
 void PrintTitle()
 {
     SetWordColor(6);
-    SetConsoleOutputCP(65001);
+    SetConsoleOutputCP(65001);// chuyen doi qua UCRT -8 
     ShowFile("MenuTutor.txt");
-    SetConsoleOutputCP(437);
+    SetConsoleOutputCP(437); // chuyen ve lai ASCII
     // SetConsoleOutputCP(65001);
     // ShowFile("MenuTutor.txt");
     
@@ -351,23 +346,21 @@ void PrintTitle()
 //    cout << "Click vao mot vai tro de tiep tuc...";
 //}
 
-// Dán hàm này thay th? cho hàm PrintMenu() cu c?a b?n
+// thay cho Menu
 void PrintMenu() {
     int consoleWidth, consoleHeight;
     GetConsoleSize(consoleWidth, consoleHeight); // Lay chieu rong console
     
     int titleWidth = 60; // Chieu rong cua title box (58 ky tu + 2 vien)
     
-    // Tinh toan va SET LAI BIEN GLOBAL LeftMargin
     LeftMargin = (consoleWidth - titleWidth) / 2; 
     
-    // Reset lai GLOBAL TopMargin (de dam bao)
+
     TopMargin = 3;
-    // --- KET THUC PHAN MOI ---
 
-    PrintTitle(); // Goi PrintTitle, bay gio no se tu dong can giua
+    PrintTitle(); 
 
-    // PrintTitle da set global TopMargin = 14,
+    //  TopMargin = 14,
     int currentTopMargin = 15; 
 
     // --- Ve hop "Chon vai tro" (Can giua so voi Title) ---
@@ -394,7 +387,7 @@ void PrintMenu() {
     FOR(i, 1, box1_Width) cout << char(205);
     cout << char(188);
 
-    // --- Ve 3 nut (Can giua so voi Title) ---
+    //Ve 3 nut (Can giua so voi Title) 
     int boxWidth = 16;
     int spaceBetween = 8;
     int totalWidth = 3 * boxWidth + 2 * spaceBetween; // = 64
@@ -447,10 +440,8 @@ void PrintMenu() {
     int exitBoxWidth = 16; 
     string exitTitle = "Thoat";
     
-    // Tinh toan vi tri X giong nut "Admin" 
     int exitBoxX = firstBoxX + 2 * (boxWidth + spaceBetween);
-    
-    // Tinh toan vi tri Y giong nut "Dang ky"
+
     int exitBoxY = boxY + 3; 
 
     gotoXY(exitBoxX, exitBoxY);
@@ -489,10 +480,10 @@ void PrintMenu() {
 void LoginTutor() {
     system("cls");
 
-    // T?a d? và kích thu?c
+    // Toa do 
     int x = 20;
     int y = 5;
-    int width = 73;  // Can ch?nh l?i cho kh?p v?i 71 ký t? bên trong + 2 vi?n
+    int width = 73;  // can chinh 
     int height = 14;
 
     char Border = 205;   // -
@@ -512,29 +503,28 @@ void LoginTutor() {
     for (int i = 0; i < width - 2; i++) cout << Border; // -
     cout << RightTee; // ¦
 
-    // 3. Vi?t n?i dung
+    // 3. Noi dung
     // Tiêu d?
-    SetWordColor(6); // Màu vàng nh?t
+    SetWordColor(6); // Màu vàng 
     gotoXY(x + 27, y + 2); cout << "DANG NHAP - GIA SU";
 
-    // Hu?ng d?n
+    // Huong dan
     SetWordColor(8); // Màu xám
     gotoXY(x + 50, y + 9); cout << "(An mat khau bang '*')";
     gotoXY(x + 22, y + 12); cout << "(Nhan ENTER de xac nhan)";
 
-    // 4. V? ô nh?p li?u (Input boxes)
     SetWordColor(8); // Màu xám cho ô
     int inputX = x + 22;
     int inputWidth = 35;
     gotoXY(inputX, y + 6); cout << "___________________________________";
     gotoXY(inputX, y + 8); cout << "___________________________________";
 
-    // 5. Nh?n thông tin
+    // 5. nhap thông tin
     string id, password;
     
-    SetWordColor(6); // Màu tr?ng cho nhãn
+    SetWordColor(6); 
     gotoXY(x + 4, y + 6); cout << "Nhap ID:";
-    SetWordColor(15); // Màu tr?ng sáng cho ch? nh?p
+    SetWordColor(15); 
     gotoXY(inputX, y + 6);
     getline(cin, id);
 
@@ -543,9 +533,9 @@ void LoginTutor() {
     SetWordColor(15);
     password = getPassword(inputX, y + 8, inputWidth);
 
-    // 6. X? lý sau khi dang nh?p
+    // Xuy ly sau dang nhap
     SetWordColor(6); // Màu xanh duong sáng
-    gotoXY(x, y + height + 1); // Di chuy?n xu?ng du?i khung
+    gotoXY(x, y + height + 1); 
     cout << "Dang kiem tra thong tin, vui long cho..." << endl;
     
     Sleep(1000); 
@@ -607,14 +597,13 @@ void LoginAdmin() {
     int x = 50 - 2; 
     int y = 2 ;
 
-    // V? khung dang nh?p
+    // Ve Khung dang nhap
     rectangle(x, y, width, height);
 
-    // Hai dòng ch?
     string title = "DANG NHAP";
     string subtitle = "voi vai tro Admin";
 
-    // Can gi?a ch? trong khung
+    // Can giua
     int titleX = x + (width - title.length()) / 2;
     int subtitleX = x + (width - subtitle.length()) / 2;
 
@@ -625,7 +614,7 @@ void LoginAdmin() {
     gotoXY(subtitleX, y + 2);
     cout << subtitle;
 
-    // Nh?p thông tin
+    // Nhap thông tin
     string id, password;
     gotoXY(LeftMargin - 5, y + height + 2);
     SetWordColor(6);
@@ -668,7 +657,7 @@ void ShowTutorMenu() {
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightTop << "\n";
 
-    // --- Dòng tiêu d? ---
+    // --- Dòng tiêu de ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padTitle = (boxWidth - 2 - title.size()) / 2;
     SetWordColor(6);
@@ -681,7 +670,7 @@ void ShowTutorMenu() {
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << CrossRight << "\n";
 
-    // --- Dòng chào m?ng ---
+    // --- Dòng chào mung ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padWelcome = (boxWidth - 2 - welcome.size()) / 2;
     SetWordColor(6);
@@ -689,24 +678,23 @@ void ShowTutorMenu() {
     SetWordColor(14);
     std::cout << std::string(boxWidth - 2 - padWelcome - welcome.size(), ' ') << UpBorder << "\n";
 
-    // --- Dòng cu?i ---
+    // --- Dòng cuoi ---
     std::cout << std::string(startX, ' ') << LeftBottom;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightBottom << "\n";
 
-    // ======= Các ô ch?c nang =======
-    int menuWidth = 34; // tang chi?u r?ng ô d? ch?a d? ch?
-    int spaceBetween = 10; // kho?ng cách gi?a 2 c?t
+    // Các ô chuc nang 
+    int menuWidth = 34; // tang chieu rong cac ô
+    int spaceBetween = 10; // khoảng cách giữa 2 cột
     int totalMenuWidth = menuWidth * 2 + spaceBetween;
 
-    int startMenuX = (consoleWidth - totalMenuWidth) / 2; // canh gi?a theo khung trên
+    int startMenuX = (consoleWidth - totalMenuWidth) / 2; // canh giua theo khung trên
     int leftX = startMenuX;
     int rightX = leftX + menuWidth + spaceBetween;
 
-    int startY = 9; // dòng b?t d?u phía du?i khung
-    int gapY = 3;   // kho?ng cách gi?a các hàng
+    int startY = 9; // dòng bat dau phía duoi khung
+    int gapY = 3;   // khoang cach giua các hàng
 
-    // --- C?t 1 & 2 ---
     SetWordColor(14);
     rectangle(leftX, startY, menuWidth, 3);
     rectangle(rightX, startY, menuWidth, 3);
@@ -761,14 +749,13 @@ void ShowTutorMenu() {
 
 void ShowStudentMenu() {
 	system("cls");
-    // Ký t? khung
     char RightTop = 187, LeftTop = 201, LeftBottom = 200, RightBottom = 188;
     char Border = 205, UpBorder = 186, CrossLeft = 204, CrossRight = 185;
 
     int consoleWidth, consoleHeight;
     GetConsoleSize(consoleWidth, consoleHeight);
 
-    // N?i dung hi?n th?
+    // Noi dung hien thi
     std::string title = "MENU HOC VIEN";
     std::string welcome = "Chao mung ban Nguyen Van A (ID: GS123)";
 
@@ -783,7 +770,7 @@ void ShowStudentMenu() {
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightTop << "\n";
 
-    // --- Dòng tiêu d? ---
+    // --- Dòng tiêu de ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padTitle = (boxWidth - 2 - title.size()) / 2;
     SetWordColor(6); // vang
@@ -796,7 +783,7 @@ void ShowStudentMenu() {
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << CrossRight << "\n";
 
-    // --- Dòng chào m?ng ---
+    // --- Dòng chào mung ---
     std::cout << std::string(startX, ' ') << UpBorder;
     int padWelcome = (boxWidth - 2 - welcome.size()) / 2;
     SetWordColor(6);
@@ -804,12 +791,12 @@ void ShowStudentMenu() {
     SetWordColor(9);
     std::cout << std::string(boxWidth - 2 - padWelcome - welcome.size(), ' ') << UpBorder << "\n";
 
-    // --- Dòng cu?i ---
+    // --- Dòng cuoi ---
     std::cout << std::string(startX, ' ') << LeftBottom;
     for (int i = 0; i < boxWidth - 2; i++) std::cout << Border;
     std::cout << RightBottom << "\n";
 
-    // ======= Các ô ch?c nang =======
+    // ======= Các ô chuc nang =======
     int menuWidth = 34;
     int spaceBetween = 10;
     int totalMenuWidth = menuWidth * 2 + spaceBetween;
@@ -823,12 +810,12 @@ void ShowStudentMenu() {
     // moi khung co toa do x (21,55)
     // moi khung co toa do y (9,12)
 
-    // --- C?t 1 & 2 ---
+    // --- Ct 1 & 2 ---
     SetWordColor(9); // màu khung xanh duong sáng
     rectangle(leftX, startY, menuWidth, 3);
     rectangle(rightX, startY, menuWidth, 3);
 
-    SetWordColor(6); // ch? xanh duong d?m
+    SetWordColor(6); // vang
     gotoXY(leftX + 1, startY + 1);
     std::cout << "1. Hien thi thong tin ca nhan";  
     gotoXY(rightX + 1, startY + 1);
@@ -867,7 +854,7 @@ void ShowStudentMenu() {
     gotoXY(rightX + 1, startY + 1);
     std::cout << "8. Danh gia gia su";
 
-    // --- Ô Ðang Xu?t ---
+    // --- Ô Ðang Xuat ---
     int logoutX = 50;
     int logoutY = 23;
     SetWordColor(9);
@@ -876,7 +863,7 @@ void ShowStudentMenu() {
     gotoXY(logoutX + 5, logoutY + 1);
     std::cout << "Dang Xuat" << std::endl;
 
-    SetWordColor(14); // reset v? m?c d?nh
+    SetWordColor(14); // quay ve mau vang
 }
 
 void Screen_Student_one()
@@ -1038,18 +1025,16 @@ void Screen_Student_2(){
 void Screen_Student_3() {
     system("cls");
 
-    // 1. Dinh nghia toa do, kich thuoc
     int x = 20;
     int y = 5;
     int width = 73;  // 71 ky tu ben trong + 2 vien
-    int height = 10; // Tong cong 10 dong (tu y den y+9)
+    int height = 10; 
 
-    // 2. Dinh nghia cac BIEN KY TU
     char Border = 205;   // ═ (Ban da cung cap)
     char LeftTee = 204;  // ╠ (Ky tu noi)
     char RightTee = 185; // ╣ (Ky tu noi)
 
-    // 3. Ve khung ngoai
+
     SetWordColor(11); // Mau xanh duong nhat
     rectangle(x, y, width, height);
 
@@ -1077,7 +1062,6 @@ void Screen_Student_3() {
     SetWordColor(7); // Trang xam
     gotoXY(x + 4, y + 4); cout << "So du hien tai cua ban:";
 
-    // SO DU (Mau Xanh La)
     SetWordColor(10); // Set mau XANH LA (Bright Green)
     string balance = "500,000 VND";
     int balanceX = x + (width - balance.length()) / 2; // Can giua
@@ -1097,30 +1081,27 @@ void Screen_Student_3() {
 void FindTutorScreen() {
     system("cls");
 
-    // 1. Toa do và Kích thuoc
     int x = 5;       // Toa do X
     int y = 3;       // Toa do Y
-    int width = 73;  // 71 ký tu bên trong + 2 vi?n
+    int width = 73;  
     int height = 18; // 18 dòng
 
-    // Mã ký tu CP437 
     char Border = 205;   // -
     char LeftTee = 204;  // ¦
     char RightTee = 185; // ¦
 
-    // 2. Ve khung ngoài
+
     SetWordColor(11); // Màu xanh duong cho khung
     rectangle(x, y, width, height);
 
-    // 3. V? các du?ng chia ngang
-    SetWordColor(11); // Ð?m b?o màu cho du?ng chia
-    // Ðu?ng chia 1: Du?i tiêu d?
+    SetWordColor(11); 
+
     gotoXY(x, y + 2);
     cout << LeftTee;
     for (int i = 0; i < width - 2; i++) cout << Border;
     cout << RightTee;
 
-    // Ðu?ng chia 2: Du?i b? l?c
+
     gotoXY(x, y + 7);
     cout << LeftTee;
     for (int i = 0; i < width - 2; i++) cout << Border;
@@ -1149,22 +1130,22 @@ void FindTutorScreen() {
     gotoXY(x + 34, y + 5); cout << "(Xem ID o muc 5)";
     gotoXY(x + 3, y + 6); cout << "Tim theo Khu vuc:    [            ]";
 
-    // B?ng k?t qu?
+    // Bang ket qua
     SetWordColor(10); // Xanh lá cho header
     gotoXY(x + 3, y + 10); cout << "ID   | HO TEN                | MON DAY             | RATING";
     gotoXY(x + 3, y + 11); cout << "-------------------------------------------------------------------";
     
     // Du lieu doc tu file
+    // them code ....
     SetWordColor(15); // Trang sáng
     gotoXY(x + 3, y + 12); cout << "GS003| Tran Van B            | Toan 12, Ly 11      | 4.5/5";
     gotoXY(x + 3, y + 13); cout << "GS008| Nguyen Thi A          | Hoa 10              | 4.8/5";
     gotoXY(x + 3, y + 14); cout << "..."; // them vong for chay duyet vo cho ni 
 
-    // Huong dan co the xoa va thay bang click chuot
     SetWordColor(7);
     gotoXY(x + 3, y + 17); cout << "(Nhap ID, 'N' next, 'P' prev, 'Q' quit)";
 
-    // 5. Nh?n Input cho b? l?c
+
     string filterMon, filterKhuVuc;
     
     SetWordColor(15); // Màu nhap
@@ -1186,7 +1167,6 @@ void FindTutorScreen() {
 void ShowNapTienScreen_4()
 {
     system("cls");
-    // 1. Định nghĩa layout
     int x = 10, y = 5;
     int width = 55; // Chiều rộng của khung
     
@@ -1198,17 +1178,16 @@ void ShowNapTienScreen_4()
     // Tổng chiều cao (trừ đi 2 vì các viền chia bị trùng)
     int total_height = header_height + body_height + footer_height - 2; // = 16
 
-    // Ký tự phân cách (viền đôi)
-    char Border = 205;   // Ngang ═
-    char LeftTee = 204;  // Ngã 3 trái ╠
-    char RightTee = 185; // Ngã 3 phải ╣
+    char Border = 205;   
+    char LeftTee = 204;  
+    char RightTee = 185; 
 
-    // 2. Vẽ khung ngoài (Màu Vàng Sáng)
-    SetWordColor(14); // 14 = Vàng Sáng
+    // 2. Vẽ khung ngoài 
+    SetWordColor(14); 
     rectangle(x, y, width, total_height);
 
     // 3. Vẽ các đường chia ngang
-    // Đường chia Header / Body
+
     int header_divider_y = y + header_height - 1;
     gotoXY(x, header_divider_y);
     cout << LeftTee;
@@ -1244,7 +1223,6 @@ void ShowNapTienScreen_4()
     // In Chân trang (Footer)
     gotoXY(contentX, footer_divider_y + 1); cout << "Nhap lua chon cua ban (0-3):";
 
-    // 5. Nhận thông tin đầu vào
     long soTien;
     int luaChon;
     
@@ -1282,13 +1260,12 @@ void ShowDanhSachDanhGia_6()
     
     int total_height = header_height + body_height + footer_height - 2; // = 16
 
-    // Ký tự phân cách (viền đôi)
-    char Border = 205;   // Ngang ═
-    char LeftTee = 204;  // Ngã 3 trái ╠
-    char RightTee = 185; // Ngã 3 phải ╣
+    char Border = 205;   
+    char LeftTee = 204;  
+    char RightTee = 185; 
 
-    // 2. Vẽ khung ngoài (Màu Vàng Sáng)
-    SetWordColor(14); // 14 = Vàng Sáng
+    // 2. Vẽ khung ngoài 
+    SetWordColor(14); 
     rectangle(x, y, width, total_height);
 
     // 3. Vẽ các đường chia ngang
@@ -1346,7 +1323,6 @@ void ShowDanhSachDanhGia_6()
 void ShowDanhSachMonHoc_5()
 {
     system("cls");
-    // 1. Định nghĩa layout
     int x = 10, y = 5;
     int width = 60; // Chiều rộng của khung
     
@@ -1357,10 +1333,10 @@ void ShowDanhSachMonHoc_5()
     
     int total_height = header_height + body_height + footer_height - 2; // = 15
 
-    // Ký tự phân cách (viền đôi)
-    char Border = 205;   // Ngang ═
-    char LeftTee = 204;  // Ngã 3 trái ╠
-    char RightTee = 185; // Ngã 3 phải ╣
+    
+    char Border = 205;   
+    char LeftTee = 204;  
+    char RightTee = 185; 
 
     //  Vẽ khung ngoài (Màu Vàng Sáng)
     SetWordColor(14); // 14 = Vàng Sáng
@@ -1653,16 +1629,14 @@ void Screen_Tutor_2(){
 void Screen_Tutor_3() {
     system("cls");
 
-    // 1. Dinh nghia toa do, kich thuoc
     int x = 20;
     int y = 5;
     int width = 73;  // 71 ky tu ben trong + 2 vien
     int height = 10; // Tong cong 10 dong (tu y den y+9)
 
-    // 2. Dinh nghia cac BIEN KY TU
-    char Border = 205;   // ═ (Ban da cung cap)
-    char LeftTee = 204;  // ╠ (Ky tu noi)
-    char RightTee = 185; // ╣ (Ky tu noi)
+    char Border = 205;   
+    char LeftTee = 204; 
+    char RightTee = 185; 
 
     // 3. Ve khung ngoai
     SetWordColor(11); // Mau xanh duong nhat
@@ -1723,9 +1697,9 @@ void Screen_Tutor_4()
     
     int total_height = header_height + body_height + footer_height - 2; // = 15
 
-    char Border = 205;   // Ngang ═
-    char LeftTee = 204;  // Ngã 3 trái ╠
-    char RightTee = 185; // Ngã 3 phải ╣
+    char Border = 205;   
+    char LeftTee = 204;  
+    char RightTee = 185; 
 
     SetWordColor(14); //  Vàng Sáng
     rectangle(x, y, width, total_height);
@@ -1759,10 +1733,6 @@ void Screen_Tutor_4()
     gotoXY(contentX, contentY_start + 1); cout << "Cac mon hoc hien co:";
     gotoXY(contentX + 3, contentY_start + 3); cout << "1. Toan Cao Cap A1";
     gotoXY(contentX + 3, contentY_start + 4); cout << "2. Lap trinh Co ban C/C++";
-    // gotoXY(contentX + 3, contentY_start + 5); cout << "3. Lap trinh Huong doi tuong";
-    // gotoXY(contentX + 3, contentY_start + 6); cout << "4. Cau truc Du lieu & Giai thuat";
-    // gotoXY(contentX + 3, contentY_start + 7); cout << "5. Tieng Anh Giao tiep";
-    // gotoXY(contentX + 3, contentY_start + 8); cout << "6. Vat Ly Dai cuong";
 
     // In Chân trang (Footer)
     string footer = "Nhan 0 de quay lai. Nhan so de xem chi tiet...";
@@ -1917,13 +1887,12 @@ void Screen_Tutor_7(){
     // 3 dòng cho Header, 3 dòng cho Footer
     int totalHeight = 3 + bodyHeight + 3;
 
-    // Ký tự phân cách (viền đôi)
     char HL = 205; // ═
     char ML = 204; // ╠
     char MR = 185; // ╣
     
     // Vẽ khung (Màu Vàng Sáng)
-    SetWordColor(14); // 14 = Vàng Sáng
+    SetWordColor(14); 
     rectangle(x, y, width, totalHeight);
 
     // Vẽ đường phân cách
@@ -2035,27 +2004,22 @@ void Screen_Tutor_8(){
     _getch();
 }
 //    while (1) {
-//        system("cls"); // Xóa màn hình d? v? menu m?i
+//        system("cls"); // Xóa màn hình dua vao menu m?i
 //        PrintMenu();
 //        SetWordColor(14);
 //        while (1) {
 //            Coord click = MouseCoord();
-//            // In t?a d? d? debug (có th? b? sau khi ki?m tra)
 //            cout << "Mouse clicked at: " << click.FI << ", " << click.SE << "   ";
 //
-//            // Ki?m tra các khung
+//            // Kiem tra các khung
 //            if (click.SE >= 19 && click.SE <= 21 && click.FI >= 46 && click.FI <= 62) {
-//                // ... x? lý
+//                // ... xu lý
 //            }
-//            // ... các di?u ki?n khác
+//            // ... các dieu kien khác
 //        }
 //    }
 
-/**
- * @brief Hien thi va xu ly cac tuong tac trong menu hoc vien.
- * Ham nay se chay mot vong lap rieng va chi thoat ra
- * khi nguoi dung chon "Dang Xuat".
- */
+
 void HandleStudentMenu() {
     ShowStudentMenu(); // 1. Ve menu sinh vien lan dau tien.
 
@@ -2107,19 +2071,11 @@ void HandleStudentMenu() {
             ShowStudentMenu();
         }
         
-
-        // Kiem tra nut [Dang Xuat]
-        // Toa do X: (logoutX) 50 -> (logoutX + 20 - 1) 69
-        // Toa do Y: (logoutY) 23 -> (logoutY + 3 - 1) 25
+        // nut dang xuat
         else if (click.SE >= 23 && click.SE <= 25 && click.FI >= 50 && click.FI <= 69) {
             break; // 4. Thoat khoi vong lap while(true) nay
         }
 
-        // ... Them cac else if cho cac nut khac (1-6, 8) o day ...
-        // else if (click.SE >= 9 && click.SE <= 11 && click.FI >= 21 && click.FI <= 54) {
-        //     ShowStudentInfo(); // Vi du cho nut 1
-        //     ShowStudentMenu(); // Luon ve lai menu sau khi xong
-        // }
     }
     // 5. Sau khi 'break', ham nay ket thuc va quay tro lai ham main
 }
@@ -2190,24 +2146,19 @@ void HandleTutorMenu(){
 //	}
 
 /**
- * @brief Hàm main dã du?c c?u trúc l?i
+ * @brief Hàm main 
  */
 int main() {
-    PrintMenu(); // 1. Ve menu chinh (Login, Tutor, Admin)
+    PrintMenu(); 
 
     while (1) {
-        Coord click = MouseCoord(); // 2. Cho click tren menu chinh
+        Coord click = MouseCoord(); 
 
-        // Kiem tra nut [Hoc Vien]
-        // Y: 19 -> 21, X: 46 -> 62
         if (click.SE >= 19 && click.SE <= 21 && click.FI >= 28 && click.FI <= 45) {
             LoginStudent(); // Chay man hinh dang nhap
-            
-            // GOI HAM XU LY MENU CUA HOC VIEN
+    
             HandleStudentMenu(); 
 
-            // 3. Sau khi HandleStudentMenu() ket thuc (do an Dang Xuat),
-            //VE LAI menu chinh
             system("cls");
             PrintMenu();
         }
@@ -2217,19 +2168,13 @@ int main() {
         else if (click.SE >= 19 && click.SE <= 21 && click.FI >= 52 && click.FI <= 69) {
             LoginTutor();
             HandleTutorMenu(); 
-                             // tuong tu nhu HandleStudentMenu()
-            
-            // _getch(); 
             system("cls");
             PrintMenu(); 
         }
 
-        // Kiem tra nut [Admin]
         // Y: 19 -> 21, X: 94 -> 110
         else if (click.SE >= 19 && click.SE <= 21 && click.FI >= 76 && click.FI <= 93) {
             LoginAdmin();
-            // ... (Tuong tu, ban se can mot HandleAdminMenu())
-            // Tam thoi _getch() de xem menu truoc khi ve lai menu chinh
             _getch();
             system("cls");
             PrintMenu();
