@@ -1,0 +1,21 @@
+npc4
+Nguyen Van B
+npc3
+Hue
+58000
+10
+_______
+npc5
+Tri Do Dai
+npc5
+Ho Chi Minh
+0
+10
+_______
+abc
+Nguyen Dang Phong
+xyz123
+Hue
+0
+10
+_______
