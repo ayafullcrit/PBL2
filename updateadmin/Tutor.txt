@@ -1,0 +1,50 @@
+npc2
+Dac Tri
+npc3
+Hue
+0123456789
+0
+0
+0
+1
+_______
+np5
+Dang Phong
+np5
+Ha Noi
+0123456789
+0
+0
+0
+0
+_______
+np6
+Dang Phong
+np5
+Ha Noi
+0123456789
+0
+0
+0
+0
+_______
+np7
+Dang Phong
+np5
+Ha Noi
+0123456789
+0
+0
+0
+0
+_______
+np8
+Dang Phong
+np5
+Ha Noi
+0123456789
+0
+0
+0
+0
+_______
