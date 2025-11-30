@@ -34,7 +34,7 @@ bool User::Withdraw(const int &t)
 }
 void User::DisplayInfo() const
 {
-    int x = 10, y = 5;
+    int x = 30, y = 5;
     int contentY = y + 4; 
     int labelX = x + 3;   
     int valueX = x + 24; 
