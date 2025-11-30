@@ -349,7 +349,7 @@ void ShowRutTienScreen(Tutor *tutor)
 void Screen_Tutor_one(Tutor *tutor)
 {
     system("cls");
-    int x = 10, y = 5;
+    int x = 30, y = 5;
     int width = 60;      // Chiều rộng của khung
     int bodyHeight = 10; // Chiều cao của phần thân
     // 3 dòng cho Header, 3 dòng cho Footer
@@ -389,7 +389,10 @@ void Screen_Tutor_one(Tutor *tutor)
     string title = "THONG TIN CA NHAN";
     gotoXY(x + (width - title.length()) / 2, y + 1);
     cout << title;
-
+    int contentY = y + 5; 
+    int labelX = x + 3;   
+    int valueX = x + 28;  
+    gotoXY(labelX, contentY - 1);
     tutor->DisplayInfo();
 
     // In footer (căn giữa)
@@ -405,7 +408,7 @@ void Screen_Tutor_one(Tutor *tutor)
 void Screen_Tutor_2(Tutor *tutor)
 {
     system("cls");
-    int x = 10, y = 5;
+    int x = 30, y = 5;
     int width = 60;      // Chiều rộng của khung
     int bodyHeight = 10; // Chiều cao của phần thân
     // 3 dòng cho Header, 3 dòng cho Footer
@@ -810,7 +813,7 @@ void Screen_Tutor_5(Tutor *tutor)
 void Screen_Tutor_6(Tutor *tutor)
 {
     system("cls");
-    int x = 10, y = 5;
+    int x = 30, y = 5;
     int width = 60;      // Chiều rộng của khung
     int bodyHeight = 10; // Chiều cao của phần thân
     // 3 dòng cho Header, 3 dòng cho Footer
@@ -820,7 +823,7 @@ void Screen_Tutor_6(Tutor *tutor)
     char ML = 204; // ╠
     char MR = 185; // ╣
 
-    // Vẽ khung (Màu Vàng Sáng)
+    // Vẽ khung 
     SetWordColor(14);
     rectangle(x, y, width, totalHeight);
 
@@ -843,32 +846,76 @@ void Screen_Tutor_6(Tutor *tutor)
     cout << MR;
 
     // In nội dung (Màu Vàng Cam)
-    SetWordColor(6);
+    SetWordColor(10);
 
     // In tiêu đề (căn giữa)
     string title = "CAP NHAT MON HOC";
     gotoXY(x + (width - title.length()) / 2, y + 1);
     cout << title;
 
-    // In thông tin (căn lề)
+    // Hiển thị danh sách môn học
+    MyVector<SubjectRecord *> subjectList = tutor->getSubjectList();
     int contentY = y + 4; // Bắt đầu in từ dòng y + 4
     int labelX = x + 3;   // Lề trái cho nhãn
-    int valueX = x + 33;  // Lề trái cho dữ liệu
-
+    SetWordColor(10);
     gotoXY(labelX, contentY);
-    cout << "Nhap Mon hoc can chinh sua  :";
-    gotoXY(valueX, contentY);
-    string subject;
-    getline(cin, subject);
+    cout << "Danh sach mon hoc:";
 
-    gotoXY(labelX, contentY + 1);
-    cout << "Nhap hoc phi moi            :";
-    gotoXY(valueX, contentY + 1);
-    string hp;
-    getline(cin, hp);
+    int index = 1;
+    for (int i = 0; i < subjectList.getSize(); i++)
+    {
+        Subject *subject = subjectList[i]->GetSubject();
+        gotoXY(labelX, contentY + index);
+        cout << index << ". " << left << setw(20) << subject->GetName() << " - Hoc phi: " << right << setw(10) << subject->GetCost();
+        index++;
+    }
+
+    // Nhập số thứ tự môn học cần chỉnh sửa
+    int selectedIndex;
+    gotoXY(labelX, contentY + index + 1);
+    cout << "Nhap so thu tu mon hoc can chinh sua: ";
+    cin >> selectedIndex;
+
+    if (selectedIndex < 1 || selectedIndex > subjectList.getSize())
+    {
+        gotoXY(labelX, contentY + index + 2);
+        SetWordColor(4);
+        cout << "So thu tu khong hop le!";
+        gotoXY(labelX, contentY + index + 3);
+        SetWordColor(4);
+        cout << "An phim bat ky de quay lai menu!";
+        _getch();
+        return;
+    }
+
+    // Nhập học phí mới
+    int newFee;
+    gotoXY(labelX, contentY + index + 2);
+    cout << "Nhap hoc phi moi: ";
+    cin >> newFee;
+
+    if (newFee <= 0)
+    {
+        gotoXY(labelX, contentY + index + 3);
+        SetWordColor(4);
+        cout << "Hoc phi khong hop le!";
+        gotoXY(labelX, contentY + index + 4);
+        SetWordColor(4);
+        cout << "An phim bat ky de quay lai menu!";
+        _getch();
+        return;
+    }
+
+    // Cập nhật học phí
+    subjectList[selectedIndex - 1]->GetSubject()->SetCost(newFee);
+    FileHandler::SaveSubjectRecords();
+
+    gotoXY(labelX, contentY + index + 3);
+    SetWordColor(6);
+    cout << "Hoc phi da duoc cap nhat thanh cong!";
 
     // In footer (căn giữa)
-    string footer = "Nhan phim bat ky de quay lai...";
+    string footer = "Nhan phim bat ky de quay lai menu...";
     gotoXY(x + (width - footer.length()) / 2, footerSeparatorY + 1);
     cout << footer;
 
@@ -1011,6 +1058,7 @@ void HandleTutorMenu(Tutor *tutor)
         else if (click.SE >= 15 && click.SE <= 17 && click.FI >= 65 && click.FI <= 98)
         {
             // Screen_Tutor_6(tutor);//update subject
+            Screen_Tutor_6(tutor);
             ShowTutorMenu(tutor);
         }
         else if (click.SE >= 18 && click.SE <= 20 && click.FI >= 21 && click.FI <= 54)
