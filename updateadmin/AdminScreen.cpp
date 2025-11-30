@@ -253,20 +253,26 @@ Admin *LoginAdmin()
     {
         SetWordColor(4);
         cout << "Khong tim thay admin voi ID nay!";
+        cout<<" Nhan phim bay ky de quay lai menu";
+        getch();
         return NULL;
     }
     else if (!IsPassword)
     {
         SetWordColor(4);
         cout << "Mat khau khong dung!";
+        cout<<"Nhan phim bat ky de quay lai menu";
+        getch();
         return NULL;
     }
+    else if (IsPassword ==1 && IsExist ==1){
     SetWordColor(10);
     cout << "Dang nhap thanh cong!";
     gotoXY(x, y + height + 2);
     SetWordColor(6);
     cout << "Nhan phim bat ky de tiep tuc" << endl;
     _getch();
+    }
     return admin;
 }
 void ResetPassword(Admin *admin)
@@ -284,7 +290,7 @@ void ResetPassword(Admin *admin)
 
     // Tiêu đề chính
     SetWordColor(14); // Màu vàng
-    string title = "XOA NGUOI DUNG";
+    string title = "RESET PASSWORD";
     gotoXY(x + (width - title.length()) / 2, y + 1);
     cout << title;
     Program prg;
