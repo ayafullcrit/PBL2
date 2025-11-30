@@ -257,7 +257,7 @@ void Screen_Student_2(Student *student)
 void Screen_Student_one(Student *student)
 {
     system("cls");
-    int x = 10, y = 5;
+    int x = 30, y = 5;
     int width = 60;       // Chiều rộng của khung
     int bodyHeight = 10;  // Chiều cao của phần thân
     int footerHeight = 4; // Chiều cao của phần chân trang
