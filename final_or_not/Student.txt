@@ -1,0 +1,48 @@
+npc
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+49945
+11
+_______
+npc10
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc11
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc12
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc13
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc14
+Nguyen Dang Phong
+123456
+Hue
+0123456789
+0
+11
+_______
