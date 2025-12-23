@@ -248,6 +248,8 @@ bool Program::RegisterNewUser()
         TutorList.push_back(newTutor);
         UserList.push_back(static_cast<User *>(newTutor));
         FileHandler::AppendTutorToFile(newTutor);
+        cout << "Dang ky tai khoan thanh cong!"<<"Vui long cho admin duyet" << endl;
+        return 1;
     }
     cout << "Dang ky tai khoan thanh cong!" << endl;
     return 1;
