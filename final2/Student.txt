@@ -1,0 +1,336 @@
+npc
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+49945
+11
+_______
+npc10
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc11
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc12
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc13
+Nguyen Dang Phong
+npc
+Hue
+0123456789
+0
+11
+_______
+npc14
+Nguyen Dang Phong
+123456
+Hue
+0123456789
+0
+11
+_______
+newid
+En
+mk
+Dc
+0123456
+0
+9
+_______
+S001
+Tran Minh An
+student1
+Ha Noi
+0987123456
+85000
+10
+_______
+S002
+Le Hoang Binh
+student2
+TPHCM
+0918234567
+92000
+11
+_______
+S003
+Pham Cong Chinh
+student3
+Da Nang
+0939345678
+78000
+9
+_______
+S004
+Vu Duy Dat
+student4
+Hai Phong
+0940456789
+65000
+12
+_______
+S005
+Doan Kim Em
+student5
+Can Tho
+0951567890
+89000
+10
+_______
+S006
+Nguyen Phuong Giang
+student6
+Binh Duong
+0962678901
+95000
+11
+_______
+S007
+Tran Duc Hieu
+student7
+Dong Nai
+0973789012
+72000
+9
+_______
+S008
+Le Minh Khoi
+student8
+Hue
+0984890123
+81000
+10
+_______
+S009
+Pham Lan Nhi
+student9
+Quang Ninh
+0995901234
+88000
+11
+_______
+S010
+Hoang Ngoc Oanh
+student10
+Vung Tau
+0916012345
+76000
+12
+_______
+S011
+Vu Quang Phuc
+student11
+Hai Duong
+0927123456
+93000
+10
+_______
+S012
+Do Thi Quynh
+student12
+Nam Dinh
+0938234567
+84000
+11
+_______
+S013
+Ngo Son Tung
+student13
+Thai Binh
+0949345678
+67000
+9
+_______
+S014
+Bui Thanh Van
+student14
+Thanh Hoa
+0950456789
+79000
+10
+_______
+S015
+Mai Xuan Yen
+student15
+Nghe An
+0961567890
+91000
+11
+_______
+S016
+Lam Chi Bao
+student16
+Ha Tinh
+0972678901
+82000
+12
+_______
+S017
+Cao Dinh Cuong
+student17
+Quang Binh
+0983789012
+75000
+10
+_______
+S018
+Dao My Duyen
+student18
+Quang Tri
+0994890123
+86000
+11
+_______
+S019
+Trinh Gia Huy
+student19
+Thua Thien Hue
+0915901234
+74000
+9
+_______
+S020
+Phan Huu Ich
+student20
+Da Nang
+0926012345
+90000
+10
+_______
+S021
+Vo Kim Khanh
+student21
+Quang Nam
+0937123456
+83000
+11
+_______
+S022
+Hoang Luu Ly
+student22
+Quang Ngai
+0948234567
+77000
+12
+_______
+S023
+Nghiem Manh Nhat
+student23
+Binh Dinh
+0959345678
+92000
+10
+_______
+S024
+Duong Phuc Quan
+student24
+Phu Yen
+0960456789
+68000
+11
+_______
+S025
+Truong Quynh Thu
+student25
+Khanh Hoa
+0971567890
+85000
+9
+_______
+S026
+Ly Thanh Tung
+student26
+Lam Dong
+0982678901
+94000
+10
+_______
+S027
+Kieu Anh Vu
+student27
+Binh Thuan
+0993789012
+81000
+11
+_______
+S028
+Doan Bich Van
+student28
+Ninh Thuan
+0914890123
+73000
+12
+_______
+S029
+Ton Chi Cong
+student29
+Tay Ninh
+0925901234
+89000
+10
+_______
+S030
+Nguyen Dac Loc
+student30
+Long An
+0936012345
+96000
+11
+_______
+S031
+Tran Ngoc Mai
+student31
+Dong Thap
+0947123456
+82000
+9
+_______
+S032
+Le Phuoc Nghia
+student32
+An Giang
+0958234567
+75000
+10
+_______
+S033
+Pham Quoc Thanh
+student33
+Kien Giang
+0969345678
+88000
+11
+_______
+S034
+Vu Thi Uyen
+student34
+Ca Mau
+0970456789
+91000
+12
+_______
+S035
+Do Van Khanh
+student35
+Soc Trang
+0981567890
+79000
+10
+_______
