@@ -1,8 +1,8 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "User.h"
-#include "FileHandler.h"
-#include "Screen.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Screen.h"
 #include <limits>
 User::User(const User &other)
 {
