@@ -253,12 +253,14 @@ Admin *LoginAdmin()
     {
         SetWordColor(4);
         cout << "Khong tim thay admin voi ID nay!";
+        _getch();
         return NULL;
     }
     else if (!IsPassword)
     {
         SetWordColor(4);
         cout << "Mat khau khong dung!";
+        _getch();
         return NULL;
     }
     SetWordColor(10);
