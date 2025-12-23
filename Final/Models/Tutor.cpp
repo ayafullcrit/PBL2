@@ -1,13 +1,13 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
-#include "Screen.h"
+#include "../Utility/Screen.h"
 #include "Tutor.h"
 #include "Student.h"
 #include "Subject.h"
 #include "SubjectRecord.h"
-#include "FileHandler.h"
+#include "../Utility/FileHandler.h"
 #include "Schedule.h"
-#include "Program.h"
+#include "../Utility/Program.h"
 Tutor::Tutor(const string &id, const string &name, const string &location, const string &pass,
              const string &phoneNumber, const bool &approved, const int &balance, const int &sbjlist,
              const double &rating, const int &numrating)

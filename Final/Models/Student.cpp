@@ -3,8 +3,8 @@
 #include "Student.h"
 #include "Tutor.h"
 #include "Subject.h"
-#include "FileHandler.h"
-#include "Screen.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Screen.h"
 #include "Schedule.h"
 Student::Student(const string &id, const string &name, const string &location, const string &pass,
                  const string &phoneNumber, const int &balance, const int &grade, const int &sbjlist

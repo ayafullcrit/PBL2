@@ -1,6 +1,6 @@
 #pragma once
-#include "User.h"
-#include "MyVector.h"
+#include "../Core/User.h"
+#include "../Template/MyVector.h"
 class Tutor;
 class Subject;
 class Schedule;

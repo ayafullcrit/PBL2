@@ -1,6 +1,6 @@
 #pragma once
 #include "Subject.h"
-#include "MyVector.h"
+#include "../Template/MyVector.h"
 #include "Student.h"
 class SubjectRecord
 {

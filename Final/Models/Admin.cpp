@@ -1,11 +1,11 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Admin.h"
-#include "Program.h"
+#include "../Utility/Program.h"
 #include "Student.h"
 #include "Tutor.h"
-#include "FileHandler.h"
-#include "Screen.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Screen.h"
 bool Admin::RemoveUser(const string &UserID)
 {
     Program prg;

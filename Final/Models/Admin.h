@@ -1,6 +1,6 @@
 #pragma once
-#include "MyVector.h"
-#include "User.h"
+#include "../Template/MyVector.h"
+#include "../Core/User.h"
 #include "Tutor.h"
 class Admin : public User
 {

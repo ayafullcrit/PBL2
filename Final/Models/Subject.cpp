@@ -1,6 +1,6 @@
 #include "Subject.h"
-#include "FileHandler.h"
-#include "Program.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Program.h"
 #include <iostream>
 using namespace std;
 Subject::Subject(const string &sbjname = "DefaultName", const int &cost, const string &ID)
