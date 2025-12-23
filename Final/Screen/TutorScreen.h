@@ -1,1 +1,13 @@
-
+class Tutor;
+Tutor* LoginTutor();
+void ShowTutorMenu(Tutor* tutor);
+void HandleTutorMenu(Tutor* tutor);
+void Screen_Tutor_7(Tutor* tutor);
+void Screen_Tutor_6(Tutor* tutor);
+void Screen_Tutor_5(Tutor* tutor);
+void Screen_Tutor_4(Tutor* tutor);
+void Screen_Tutor_8(Tutor* tutor);
+void Screen_Tutor_one(Tutor* tutor);
+void Screen_Tutor_2(Tutor* tutor);
+void Screen_Tutor_3(Tutor* tutor);
+void ShowRutTienScreen(Tutor* tutor);
