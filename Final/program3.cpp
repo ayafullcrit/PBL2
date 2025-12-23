@@ -2,14 +2,14 @@
 #define WIN32_LEAN_AND_MEAN
 #include <iostream>
 #include <limits>
-#include "Screen.h"
-#include "FileHandler.h"
-#include "Program.h"
-#include "Student.h"
-#include "Admin.h"
-#include "StudentScreen.h"
-#include "TutorScreen.h"
-#include "AdminScreen.h"
+#include "../Utility/Screen.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Program.h"
+#include "../Models/Student.h"
+#include "../Models/Admin.h"
+#include "../Screen/StudentScreen.h"
+#include "../Screen/TutorScreen.h"
+#include "../Screen/AdminScreen.h"
 #define FOR(i, a, b) for (int i = a; i <= b; i++)
 using namespace std;
 
