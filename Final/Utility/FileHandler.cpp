@@ -1,12 +1,13 @@
 #include "FileHandler.h"
 #include "Program.h"
-#include "Admin.h"
+#include "../Models/Admin.h"
+#include "../Models/Schedule.h"
 #include "conio.h"
-const string FileHandler::TUTOR_FILE = "Tutor.txt";
-const string FileHandler::STUDENT_FILE = "Student.txt";
-const string FileHandler::SUBJECT_RECORD_FILE = "SubjectRecord.txt";
-const string FileHandler::SCHEDULE_FILE = "Schedule.txt";
-const string FileHandler::ADMIN_FILE = "Admin.txt";
+const string FileHandler::TUTOR_FILE = "DataBase/Tutor.txt";
+const string FileHandler::STUDENT_FILE = "DataBase/Student.txt";
+const string FileHandler::SUBJECT_RECORD_FILE = "DataBase/SubjectRecord.txt";
+const string FileHandler::SCHEDULE_FILE = "DataBase/Schedule.txt";
+const string FileHandler::ADMIN_FILE = "DataBase/Admin.txt";
 bool FileHandler::LoadAdmins()
 {
     Program a;
@@ -173,26 +174,26 @@ bool FileHandler::LoadSubjectRecords()
         if (line.empty() || line == "_______")
             continue;
         subjectID = line;
-        //cout << "Reading SubjectRecord: " << subjectID << endl;
+        // cout << "Reading SubjectRecord: " << subjectID << endl;
         getline(file, subjectName);
         getline(file, costStr);
         getline(file, tutorID);
         getline(file, studentCountStr);
         int cost = stoi(costStr);
         int studentCount = stoi(studentCountStr);
-       // cout << "Read data" << endl;
+        // cout << "Read data" << endl;
         Tutor *tutor = a.GetTutorByID(tutorID);
         Subject *newSubject = new Subject(subjectName, cost, subjectID);
         if (!tutor)
         {
             cout << "Tutor with ID " << tutorID << " not found; skipping subject " << subjectID << endl;
-           _getch();
+            _getch();
         }
-       // cout << "Create 2 objects" << endl;
+        // cout << "Create 2 objects" << endl;
         tutor->AddSubject(newSubject);
-       // cout << "Added subject to tutor" << endl;
+        // cout << "Added subject to tutor" << endl;
         SubjectRecord *newSr = tutor->getSubjectList()[tutor->getSubjectList().getSize() - 1];
-      //  cout << "Create complete" << endl;
+        //  cout << "Create complete" << endl;
         for (int i = 0; i < studentCount; i++)
         {
             getline(file, line);
@@ -200,15 +201,13 @@ bool FileHandler::LoadSubjectRecords()
             if (curstd)
             {
                 tutor->addStudentToSubject(curstd, subjectID);
-                //cout << "Added Student " << endl;
+                // cout << "Added Student " << endl;
             }
             else
             {
-                cout << "Student with ID " << line << " not found!" << endl;
-                _getch();
             }
         }
-      //  cout << "SubjectRecord " << subjectID << " Loaded" << endl;
+        //  cout << "SubjectRecord " << subjectID << " Loaded" << endl;
         //_getch();
         a.getSbjId()[subjectID] = newSr;
         a.getSrList().push_back(newSr);

@@ -9,7 +9,7 @@
 #include <string>
 #include <iomanip>
 #include <regex>
-#include "MyVector.h"
+#include "../Template/MyVector.h"
 #define Coord pair<int, int>
 #define SE second
 #define FI first

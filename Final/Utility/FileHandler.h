@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Tutor.h"
-#include "Student.h"
-#include "SubjectRecord.h"
-#include "Schedule.h"
+#include "../Models/Tutor.h"
+#include "../Models/Student.h"
+#include "../Models/SubjectRecord.h"
+#include "../Models/Schedule.h"
 #include <fstream>
 #include <string>
 #include <iostream>

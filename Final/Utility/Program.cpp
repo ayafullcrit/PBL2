@@ -1,11 +1,12 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Program.h"
-#include "Tutor.h"
-#include "SubjectRecord.h"
-#include "Schedule.h"
+#include "../Models/Tutor.h"
+#include "../Models/SubjectRecord.h"
+#include "../Models/Schedule.h"
 #include "FileHandler.h"
 #include "Screen.h"
+#include "../Models/Schedule.h"
 #include <fstream>
 #include <sstream>
 #include <limits>
@@ -197,7 +198,7 @@ bool Program::RegisterNewUser()
     {
         cout << "Nhap so mon hoc day: ";
         SetWordColor(15);
-        if(!IntInput(data.subjectCount))
+        if (!IntInput(data.subjectCount))
             return 0;
         SetWordColor(10);
         cin.ignore();
@@ -248,7 +249,7 @@ bool Program::RegisterNewUser()
         TutorList.push_back(newTutor);
         UserList.push_back(static_cast<User *>(newTutor));
         FileHandler::AppendTutorToFile(newTutor);
-        cout << "Dang ky tai khoan thanh cong!"<<"Vui long cho admin duyet" << endl;
+        cout << "Dang ky tai khoan thanh cong!" << "Vui long cho admin duyet" << endl;
         return 1;
     }
     cout << "Dang ky tai khoan thanh cong!" << endl;

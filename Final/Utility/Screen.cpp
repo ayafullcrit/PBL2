@@ -1,5 +1,5 @@
 #include "Screen.h"
-#include "Schedule.h"
+#include "../Models/Schedule.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -149,7 +149,7 @@ bool IntInput(int &a)
     if (cin.fail())
     {
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore();
         return 0;
     }
     if (a < 0)
