@@ -64,7 +64,7 @@ void User::DisplayInfo() const
     cout << "So dien thoai   :";
     SetWordColor(15); // Màu trắng
     gotoXY(valueX, contentY + 4);
-    cout << Location;
+    cout << PhoneNumber;
 
     SetWordColor(10); // Màu Vàng Cam
     gotoXY(labelX, contentY + 5);

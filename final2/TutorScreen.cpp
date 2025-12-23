@@ -572,17 +572,35 @@ void Screen_Tutor_4(Tutor *tutor)
     MyVector<string> subnames;
     int currentPage = 0;
     int itemsPerPage = 10; // Số môn học mỗi trang
-    int totalItems = 0;
+    int totalItems = sbjlist.getSize();
+
+    // Build a list of subject names and a short list of student names per subject.
     for (int i = 0; i < sbjlist.getSize(); i++)
     {
-        totalItems += sbjlist[i]->GetStudentList().getSize();
-        for (int j = 0; j < sbjlist[i]->GetStudentList().getSize(); j++)
+        SubjectRecord *sr = sbjlist[i];
+        subnames.push_back(sr->GetSubject() ? sr->GetSubject()->GetName() : string("-"));
+        MyVector<Student *> sl = sr->GetStudentList();
+        if (sl.getSize() == 0)
         {
-            stdnames.push_back(sbjlist[i]->GetStudentList()[j]->GetName());
-            subnames.push_back(sbjlist[i]->GetSubject()->GetName());
+            stdnames.push_back(string("-"));
+        }
+        else
+        {
+            string names = "";
+            int limit = min(3, sl.getSize());
+            for (int j = 0; j < limit; ++j)
+            {
+                if (j)
+                    names += ", ";
+                names += sl[j]->GetName();
+            }
+            if (sl.getSize() > limit)
+                names += ", ...";
+            stdnames.push_back(names);
         }
     }
-    int totalPages = (totalItems + itemsPerPage - 1) / itemsPerPage;
+
+    int totalPages = totalItems == 0 ? 1 : (totalItems + itemsPerPage - 1) / itemsPerPage;
     while (1)
     {
         system("cls");
@@ -624,6 +642,18 @@ void Screen_Tutor_4(Tutor *tutor)
         string title = "DANH SACH HOC VIEN - Trang " + to_string(currentPage + 1) + "/" + to_string(totalPages);
         gotoXY(x + (width - title.length()) / 2, y + 1);
         cout << title;
+
+        // Nếu không có môn học nào, hiện thông báo rõ ràng và chờ người dùng
+        if (totalItems == 0)
+        {
+            SetWordColor(12);
+            string msg = "Ban chua co mon hoc!";
+            gotoXY(x + (width - msg.length()) / 2, y + header_height + 2);
+            cout << msg;
+            SetWordColor(7);
+            _getch();
+            return;
+        }
 
         // Nội dung - 2 cột
         int contentX = x + 3;
@@ -688,7 +718,7 @@ void Screen_Tutor_4(Tutor *tutor)
         {
             if (d.SE != 25)
                 continue;
-            if (d.FI >= 27 && d.SE <= 40)
+            if (d.FI >= 27 && d.FI <= 40)
             {
                 currentPage--;
                 if (currentPage < 0)
@@ -697,8 +727,9 @@ void Screen_Tutor_4(Tutor *tutor)
             if (d.FI >= 47 && d.FI <= 58)
             {
                 currentPage++;
-                if (currentPage > totalPages)
-                    currentPage = totalPages;
+                int lastPage = totalPages - 1;
+                if (currentPage > lastPage)
+                    currentPage = lastPage;
             }
             if (d.FI >= 11 && d.FI <= 18)
                 break;
@@ -707,7 +738,7 @@ void Screen_Tutor_4(Tutor *tutor)
         {
             if (d.SE != 25)
                 continue;
-            if (d.FI <= 48 && d.FI >= 40)
+            if (d.FI >= 40 && d.FI <= 48)
             {
                 break;
             }
@@ -768,12 +799,14 @@ void Screen_Tutor_5(Tutor *tutor)
     cout << "Nhap ten mon hoc moi    :";
     gotoXY(valueX, contentY);
     string mon;
-    getline(cin, mon);
-
+    SetWordColor(15);
+    getline(cin >> ws, mon);
+    SetWordColor(14);
     gotoXY(labelX, contentY + 1);
     cout << "Nhap hoc phi cho mon hoc:";
     gotoXY(valueX, contentY + 1);
     int hp;
+    SetWordColor(15);
     if (!IntInput(hp))
     {
         gotoXY(labelX, contentY + 2);
@@ -785,11 +818,16 @@ void Screen_Tutor_5(Tutor *tutor)
         _getch();
         return;
     }
-
+    SetWordColor(14);
     gotoXY(labelX, contentY + 6);
-    cout << "Da them mon hoc         :" << mon;
+    cout << "Da them mon hoc ";
+    SetWordColor(15);
+    cout << mon;
     gotoXY(labelX, contentY + 7);
-    cout << " va hoc phi la " << hp;
+    SetWordColor(14);
+    cout << "va hoc phi la ";
+    SetWordColor(15);
+    cout << hp;
 
     Subject *newsubject = new Subject(mon, hp);
     SubjectRecord *sr = new SubjectRecord(newsubject, tutor);
@@ -820,7 +858,7 @@ void Screen_Tutor_6(Tutor *tutor)
     char ML = 204; // ╠
     char MR = 185; // ╣
 
-    // Vẽ khung 
+    // Vẽ khung
     SetWordColor(14);
     rectangle(x, y, width, totalHeight);
 
@@ -851,7 +889,7 @@ void Screen_Tutor_6(Tutor *tutor)
     cout << title;
 
     // Hiển thị danh sách môn học
-    MyVector<SubjectRecord *>& subjectList = tutor->getSubjectList();
+    MyVector<SubjectRecord *> &subjectList = tutor->getSubjectList();
     int contentY = y + 4; // Bắt đầu in từ dòng y + 4
     int labelX = x + 3;   // Lề trái cho nhãn
     SetWordColor(10);
@@ -863,15 +901,20 @@ void Screen_Tutor_6(Tutor *tutor)
     {
         Subject *subject = subjectList[i]->GetSubject();
         gotoXY(labelX, contentY + index);
-        cout << index << ". " << left << setw(20) << subject->GetName() << " - Hoc phi: " << right << setw(10) << subject->GetCost();
+        SetWordColor(10);
+        cout << index << ". " << left << setw(20) << subject->GetName() << " - Hoc phi: " << right << setw(10);
+        SetWordColor(15);
+        cout << subject->GetCost();
         index++;
     }
-
+    SetWordColor(10);
     // Nhập số thứ tự môn học cần chỉnh sửa
     int selectedIndex;
     gotoXY(labelX, contentY + index + 1);
     cout << "Nhap so thu tu mon hoc can chinh sua: ";
+    SetWordColor(15);
     cin >> selectedIndex;
+    SetWordColor(10);
 
     if (selectedIndex < 1 || selectedIndex > subjectList.getSize())
     {
@@ -889,7 +932,9 @@ void Screen_Tutor_6(Tutor *tutor)
     int newFee;
     gotoXY(labelX, contentY + index + 2);
     cout << "Nhap hoc phi moi: ";
+    SetWordColor(15);
     cin >> newFee;
+    SetWordColor(10);
 
     if (newFee <= 0)
     {
@@ -998,12 +1043,12 @@ void Screen_Tutor_7(Tutor *tutor)
     }
 
     SubjectRecord *sr = tutor->getSubjectList()[selectedIndex - 1];
-    MyVector<Student*>& studentList = sr->GetStudentList();
-    for(int i = 0; i < studentList.getSize(); i++)
+    MyVector<Student *> &studentList = sr->GetStudentList();
+    for (int i = 0; i < studentList.getSize(); i++)
     {
-        for(int j = 0; j < studentList[i]->GetSubjectList().getSize(); j++)
+        for (int j = 0; j < studentList[i]->GetSubjectList().getSize(); j++)
         {
-            if(studentList[i]->GetSubjectList()[j]->GetID() == sr->GetID())
+            if (studentList[i]->GetSubjectList()[j]->GetID() == sr->GetID())
             {
                 studentList[i]->GetSubjectList().removeAt(j);
                 studentList[i]->GetTutorList().removeAt(j);
@@ -1011,9 +1056,51 @@ void Screen_Tutor_7(Tutor *tutor)
             }
         }
     }
-    cout << "1 delete call!";
-    _getch();
+    // 1) Xóa tất cả lịch liên quan tới SubjectRecord (trong danh sách global, tutor và students)
     Program prg;
+    for (int i = 0; i < prg.getScheduleList().getSize();)
+    {
+        Schedule *sch = prg.getScheduleList()[i];
+        if (sch && sch->GetSubjectRecord() && sch->GetSubjectRecord()->GetID() == sr->GetID())
+        {
+            // Xóa khỏi tutor của lịch
+            Tutor *t = sch->GetTutor();
+            if (t)
+            {
+                for (int k = 0; k < t->GetSchedules().getSize(); ++k)
+                {
+                    if (t->GetSchedules()[k] && t->GetSchedules()[k]->GetID() == sch->GetID())
+                    {
+                        t->GetSchedules().removeAt(k);
+                        break;
+                    }
+                }
+            }
+            // Xóa khỏi student của lịch
+            Student *s = sch->GetStudent();
+            if (s)
+            {
+                for (int k = 0; k < s->GetSchedules().getSize(); ++k)
+                {
+                    if (s->GetSchedules()[k] && s->GetSchedules()[k]->GetID() == sch->GetID())
+                    {
+                        s->GetSchedules().removeAt(k);
+                        break;
+                    }
+                }
+            }
+            // Xóa khỏi danh sách global và giải phóng bộ nhớ
+            prg.getScheduleList().removeAt(i);
+            delete sch;
+            // không tăng i vì đã rút ngắn mảng
+        }
+        else
+        {
+            ++i;
+        }
+    }
+
+    // 2) Xóa SubjectRecord khỏi danh sách SubjectRecord global
     for (int i = 0; i < prg.getSrList().getSize(); i++)
     {
         if (prg.getSrList()[i]->GetID() == sr->GetID())
@@ -1022,14 +1109,14 @@ void Screen_Tutor_7(Tutor *tutor)
             break;
         }
     }
-    cout << "2 delete call!";
-    _getch();
+
+    // 3) Xóa SubjectRecord khỏi danh sách của tutor
     tutor->getSubjectList().removeAt(selectedIndex - 1);
-    cout << "3 delete call!";
-    _getch();
+
+    // 4) Lưu các file thay đổi
+    FileHandler::SaveSchedules();
     FileHandler::SaveSubjectRecords();
-    cout << "Delete called!";
-    _getch();
+
     // In footer (căn giữa)
     string footer = "Nhan phim bat ky de quay lai menu...";
     gotoXY(x + (width - footer.length()) / 2, footerSeparatorY + 1);
@@ -1196,12 +1283,12 @@ void HandleTutorMenu(Tutor *tutor)
         }
         else if (click.SE >= 15 && click.SE <= 17 && click.FI >= 65 && click.FI <= 98)
         {
-            Screen_Tutor_6(tutor);//update subject
+            Screen_Tutor_6(tutor); // update subject
             ShowTutorMenu(tutor);
         }
         else if (click.SE >= 18 && click.SE <= 20 && click.FI >= 21 && click.FI <= 54)
         {
-            Screen_Tutor_7(tutor);//xac nhan lich day
+            Screen_Tutor_7(tutor); // xac nhan lich day
             ShowTutorMenu(tutor);
         }
         else if (click.SE >= 18 && click.SE <= 20 && click.FI >= 65 && click.FI <= 98)

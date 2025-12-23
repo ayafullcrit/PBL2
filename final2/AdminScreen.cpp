@@ -505,7 +505,7 @@ void DisplayUserList()
                 if (role == "Gia su")
                     SetWordColor(10); // Xanh lá cho gia sư
                 else if (role == "Hoc sinh")
-                    SetWordColor(11); // Xanh nhạt cho học sinh
+                    SetWordColor(9); // Xanh nhạt cho học sinh
                 else
                     SetWordColor(7); // Màu mặc định
 
@@ -572,29 +572,28 @@ void DisplayUserList()
         SetWordColor(7);
         // keyboard navigation
         Coord d = MouseCoord();
-        if (totalPages > 1)
-        {
-            if (d.SE != 22)
-                continue;
-            if (d.FI >= 35 && d.SE <= 48)
+            if (totalPages > 1)
             {
-                currentPage--;
-                if (currentPage < 0)
-                    currentPage = 0;
-                else
+                if (d.SE != 22)
+                    continue;
+                if (d.FI >= 35 && d.FI <= 48)
+                {
+                    currentPage--;
+                    if (currentPage < 0)
+                        currentPage = 0;
                     IsPrinted = 0;
-            }
-            if (d.FI >= 59 && d.FI <= 67)
-            {
-                currentPage++;
-                if (currentPage > totalPages)
-                    currentPage = totalPages;
-                else
+                }
+                if (d.FI >= 59 && d.FI <= 67)
+                {
+                    currentPage++;
+                    int lastPage = totalPages - 1;
+                    if (currentPage > lastPage)
+                        currentPage = lastPage;
                     IsPrinted = 0;
+                }
+                if (d.FI >= 5 && d.FI <= 12)
+                    break;
             }
-            if (d.FI >= 5 && d.FI <= 12)
-                break;
-        }
         else
         {
             if (d.SE == 22 && d.FI >= 51 && d.FI <= 58)

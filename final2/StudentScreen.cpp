@@ -1551,6 +1551,7 @@ void SubjectSelectionMenu(Student *student, MyVector<Tutor *> tutors, string Ind
                 break;
             }
             student->Withdraw(selectedSubject->GetSubject()->GetCost());
+            selectedTutor->Deposit(selectedSubject->GetSubject()->GetCost());
             selectedTutor->addStudentToSubject(student, selectedSubject->GetSubject()->GetID());
             FileHandler::SaveAllData();
             gotoXY(11, 22);
@@ -1597,7 +1598,7 @@ void DisplayTutors(MyVector<Tutor *> tutors, Student *student)
     while (true)
     {
         int x = 5, y = 3;
-        int width = 90;
+        int width = 95;
         int total_height = 22;
 
         int startIndex = currentPage * tutorsPerPage;
@@ -1721,6 +1722,8 @@ void DisplayTutors(MyVector<Tutor *> tutors, Student *student)
                     {
                         subjects += " ...";
                     }
+                    if(subjects.size() > 18)
+                    subjects = subjects.substr(0,15) + "...";
                     cout << subjects;
                 }
                 else
@@ -1821,7 +1824,7 @@ void FilterResult(Student *student, string TutorName, string SubjectName, string
 
             for (int j = 0; j < subjectList.getSize(); ++j)
             {
-                if (subjectList[j]->GetSubject()->GetName().find(SubjectName) != string::npos)
+                if (subjectList[j]->GetSubject()->GetName().find(SubjectName) != string::npos && subjectList[j]->GetSubject()->GetCost() >= stoi(LowerCost) && subjectList[j]->GetSubject()->GetCost() <= stoi(UpperCost) )
                 {
                     TempVector.push_back(tutor);
                     break;
@@ -2075,7 +2078,7 @@ Student *LoginStudent()
     cout << "Mat Khau:";
     SetWordColor(15);
     gotoXY(inputX, y + 6);
-    getline(cin, id);
+    getline(cin >> ws, id);
     // SetWordColor(6);
     // gotoXY(x + 4, y + 8);
     // cout << "Mat Khau:";
