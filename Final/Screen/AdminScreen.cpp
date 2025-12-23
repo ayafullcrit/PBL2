@@ -1,10 +1,10 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Screen.h"
-#include "Program.h"
+#include "../Utility/Program.h"
 #include "Tutor.h"
 #include "Student.h"
-#include "FileHandler.h"
+#include "../Utility/FileHandler.h"
 #include "Admin.h"
 void RemoveUser(Admin *admin)
 {

@@ -3,12 +3,12 @@
 #define FOR(i, a, b) for (int i = a; i <= b; i++)
 #include <iostream>
 #include <limits>
-#include "Screen.h"
-#include "FileHandler.h"
-#include "Program.h"
-#include "Tutor.h"
-#include "Schedule.h"
-#include "MyVector.h"
+#include "../Utility/Screen.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Program.h"
+#include "../Models/Tutor.h"
+#include "../Models/Schedule.h"
+#include "../Template/MyVector.h"
 Tutor *LoginTutor()
 {
     gotoXY(0, 0);

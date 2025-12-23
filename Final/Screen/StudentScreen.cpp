@@ -3,12 +3,12 @@
 #define FOR(i, a, b) for (int i = a; i <= b; i++)
 #include <iostream>
 #include <limits>
-#include "Screen.h"
-#include "FileHandler.h"
-#include "Program.h"
-#include "Student.h"
-#include "Schedule.h"
-#include "MyVector.h"
+#include "../Utility/Screen.h"
+#include "../Utility/FileHandler.h"
+#include "../Utility/Program.h"
+#include "../Models/Student.h"
+#include "../Models/Schedule.h"
+#include "../Template/MyVector.h"
 void ShowStudentMenu(Student *student)
 {
     system("cls");
@@ -214,7 +214,7 @@ void Screen_Student_2(Student *student)
         if (!lop.empty())
             IntGrd = stoi(lop);
 
-        if (IntGrd < 1 or IntGrd > 12)
+        if (IntGrd < 1 || IntGrd > 12)
             isvalid = 0;
 
         if (!isvalid)
@@ -1358,7 +1358,7 @@ void SubjectSelectionMenu(Student *student, MyVector<Tutor *> tutors, string Ind
     int index;
     if (valid)
         index = stoi(Index);
-    if (index < 1 or index > tutors.getSize())
+    if (index < 1 || index > tutors.getSize())
         valid = 0;
     if (!valid)
     {
@@ -1484,7 +1484,7 @@ void SubjectSelectionMenu(Student *student, MyVector<Tutor *> tutors, string Ind
         Coord d = MouseCoord();
         if (d.second == 22)
         {
-            if (d.first < 47 or d.second > 54)
+            if (d.first < 47 || d.second > 54)
                 continue;
 
             SubjectIndex = ReadInput(49, 22, 3, "");
@@ -1500,7 +1500,7 @@ void SubjectSelectionMenu(Student *student, MyVector<Tutor *> tutors, string Ind
             int subjectindex;
             if (valid)
                 subjectindex = stoi(SubjectIndex);
-            if (subjectindex < 1 or subjectindex > tutor->getSubjectList().getSize())
+            if (subjectindex < 1 || subjectindex > tutor->getSubjectList().getSize())
                 valid = 0;
             gotoXY(11, 22);
             cout << "                                                   ";
