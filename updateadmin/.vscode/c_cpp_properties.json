@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win64",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Core",
+                "${workspaceFolder}/Models",
+                "${workspaceFolder}/Screen",
+                "${workspaceFolder}/Utility",
+                "${workspaceFolder}/Template",
+                "C:/msys64/mingw64/include"
+            ],
+            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

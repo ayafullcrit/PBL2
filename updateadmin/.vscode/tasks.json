@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "C/C++: g++.exe build all cpp files",
+			"type": "shell",
+			"command": "C:/msys64/mingw64/bin/g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}/*.cpp",
+				"-o",
+				"${workspaceFolder}/program.exe"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Compiler: C:/msys64/mingw64/bin/g++.exe - Build all .cpp files in workspace"
+		}
+	]
+}

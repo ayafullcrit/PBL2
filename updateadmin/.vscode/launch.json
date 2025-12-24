@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cppbuild",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe",
+            "miDebuggerArgs": "-ex \"handle SIGTRAP nostop noprint pass\" -ex \"run\"",
+            "preLaunchTask": "Build SFML App",
+            "stopAtConnect": false
+        }
+    ]
+}

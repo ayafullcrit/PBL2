@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build SFML App",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "main.cpp",
+                "-o", "app.exe"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": ["$gcc"],
+            "detail": "Build SFML app using g++ from MSYS2"
+        }
+    ]
+}
